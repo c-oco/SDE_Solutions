@@ -1,0 +1,44 @@
+// Author :- Nitish ,    Github:- c-oco
+
+import java.io.*;
+import java.util.* ;
+
+public class Solution {
+    public static void setZeros(int matrix[][]) {
+        boolean r1=false, c1=false;
+        int n=matrix.length, m=matrix[0].length;
+
+        for(int j=0; j<m; j++)                     // Checks if any element is 0 in 1st col
+           if(matrix[0][j]==0){ c1=true; break; }
+
+        for(int i=0; i<n; i++)                     // Checks if any element is 0 in 1st row
+           if(matrix[i][0]==0){ r1=true; break; }
+
+        for(int i=1; i<n; i++){
+            for(int j=1; j<m; j++){
+                if(matrix[i][j]==0){    // Checks if any element is 0 then mark 0 in 1st row and 1st column of that element 
+                    matrix[i][0]=0;
+                    matrix[0][j]=0;
+                }
+            }
+        }
+
+        for(int i=1; i<n; i++){
+            for(int j=1; j<m; j++){
+                if(matrix[i][0]==0 || matrix[0][j]==0){   // Check if the 1st row or 1st col of that elemnt is marked 0 then mark it as 0 
+                    matrix[i][j]=0;
+                }
+            }
+        }
+
+        if(r1){                      // If 1st row has found any 0 previously then mark whole row with 0
+           for(int i=0; i<n; i++)
+             matrix[i][0]=0; 
+        }
+
+        if(c1){                     // If 1st col has found any 0 previously then mark whole col with 0
+           for(int j=0; j<m; j++)
+             matrix[0][j]=0; 
+        }   
+    }
+}
