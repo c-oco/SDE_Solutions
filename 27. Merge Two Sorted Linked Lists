@@ -1,0 +1,59 @@
+// Author :- Nitish ,    Github:- c-oco
+
+import java.io.*;
+import java.util.* ;
+
+/************************************************************
+
+    Following is the linked list node structure:
+    
+    class LinkedListNode<T> {
+        T data;
+        LinkedListNode<T> next;
+
+        public LinkedListNode(T data) {
+            this.data = data;
+        }
+    }
+
+************************************************************/
+
+public class Solution {
+	public static LinkedListNode<Integer> sortTwoLists(LinkedListNode<Integer> first, LinkedListNode<Integer> second) {
+		LinkedListNode<Integer> head=new LinkedListNode<>(0), curr=head; 
+        // Make a new head 
+
+        while(first!=null && second!=null){
+            if(first.data <= second.data){      // If 1st node is less than or equal
+                curr.next = first;
+                curr = first;                   // pointing to new attached node
+
+                first = first.next;
+            }
+            else{                               // If 2nd node is less
+                curr.next = second;
+                curr = second;
+
+                second = second.next;
+            }
+        }
+        
+        // When either one of the two list become empty
+
+        while(first!=null){                        // When 2nd list is empty
+            curr.next = first;
+            curr = first;
+
+            first = first.next;
+        }
+
+        while(second!=null){                      // When 1st list is empty
+            curr.next = second;
+            curr = second;
+
+            second = second.next;
+        }
+
+        return head.next;
+	}
+}

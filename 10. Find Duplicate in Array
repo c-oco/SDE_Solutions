@@ -1,0 +1,19 @@
+// Author :- Nitish ,    Github:- c-oco
+
+import java.io.*;
+import java.util.* ;
+
+import java.util.ArrayList;
+
+public class Solution{
+    public static int findDuplicate(ArrayList<Integer> arr, int n){
+        int freq[]=new int[n+1];   // Stores frequency of each element
+
+        for(int elem:arr){
+            if(freq[elem]!=0) return elem;    // If element already seen then return the element
+            else freq[elem]++;
+        }
+
+        return -1;
+    }
+}

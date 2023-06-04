@@ -1,0 +1,42 @@
+// Author :- Nitish ,    Github:- c-oco
+
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution {
+
+    public static int[] missingAndRepeating(ArrayList<Integer> arr, int n) {
+        int total=0;                      // Stores XOR sum from 1 to N
+        int arrTotal=0;                   // Stores XOR sum of arr
+
+        for(int i=1; i<=n; i++){
+            total ^= i;
+            arrTotal ^= arr.get(i-1);
+        }
+        
+        int rem = total ^ arrTotal;        // Gives XOR sum of missing and repeating element
+        int pos = (rem & ~(rem-1));        // postion where both differ
+
+        int z=0, o=0;                      // Distributing the elements in two groups
+        for(int elem:arr){
+            if((elem&pos)!=0) o ^= elem;
+            else z ^= elem;
+        }
+
+        for(int i=1; i<=n; i++)
+            if((i&pos)!=0) o ^= i;
+            else z ^= i;
+
+        boolean mis=true;                 // We consider that element in z is missing
+
+        for(int elem:arr)
+           if(elem==z){
+              mis = false; break;        // If z is not the actual missing eleemnt
+           }
+
+        if(mis)
+            return new int[]{z, o};
+        else return new int[]{o, z};
+    }
+}

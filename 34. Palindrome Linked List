@@ -1,0 +1,124 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+/*                                      Using SLOW and Fast Pointers             */
+
+import java.util.* ;
+import java.io.*; 
+/****************************************************************
+
+    Following is the class structure of the LinkedListNode class:
+	
+	class LinkedListNode<T> {
+    	T data;
+    	LinkedListNode<T> next;
+
+    	public LinkedListNode(T data) {
+        	this.data = data;
+    	}
+	}
+
+*****************************************************************/
+
+public class Solution {
+
+	public static boolean isPalindrome(LinkedListNode<Integer> head) {
+		if(head==null || head.next==null) return true;
+        
+		LinkedListNode<Integer> slow=head, fast=head;
+
+		while(fast!=null && fast.next!=null){
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+
+        LinkedListNode<Integer> prev=null, curr=slow, temp;
+	    
+		if(fast!=null)                 // In case of odd numbers of nodes
+		   curr=slow.next;
+
+        while(curr!=null){             // Reversing 2nd half of the list
+            temp=curr.next;
+
+            curr.next = prev;
+            prev=curr;
+            curr = temp ;
+        }
+        
+		curr=head;                       // Starting from head
+        while(prev!=null){                          // Now just compare
+            if(!(curr.data).equals(prev.data)){
+                return false;
+			}
+            curr=curr.next;
+            prev=prev.next;
+        }
+        return true;
+	}
+}
+
+
+
+
+
+/*                                      Finding length of the list           */
+
+
+
+
+
+
+import java.util.* ;
+import java.io.*; 
+/****************************************************************
+
+    Following is the class structure of the LinkedListNode class:
+	
+	class LinkedListNode<T> {
+    	T data;
+    	LinkedListNode<T> next;
+
+    	public LinkedListNode(T data) {
+        	this.data = data;
+    	}
+	}
+
+*****************************************************************/
+
+public class Solution {
+
+	public static boolean isPalindrome(LinkedListNode<Integer> head) {
+		if(head==null || head.next==null) return true;
+        
+        LinkedListNode<Integer> prev=null, curr=head, temp;
+        int l=length(curr);    // find length
+	    
+	    int i=0;
+        while(i++<l/2){             // Reversing half od the list
+            temp=head.next;
+
+            curr = head;
+            curr.next = prev;
+            prev=curr;
+            head = temp ;
+        }
+        
+        if(l%2!=0)                  // If length is odd then move one node ahead
+            head=head.next;
+        
+        while(head!=null){               // Now just compare
+            if(!(head.data).equals(prev.data)){
+                return false;
+			}
+            head=head.next;
+            prev=prev.next;
+        }
+        return true;
+	}
+
+	private static int length(LinkedListNode<Integer> head){
+        int i=0;
+        while(head!=null){ ++i; head=head.next; }
+        return i;
+    }
+}

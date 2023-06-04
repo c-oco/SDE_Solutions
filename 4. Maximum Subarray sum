@@ -1,0 +1,23 @@
+// Author :- Nitish ,    Github:- c-oco
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+	
+	public static long maxSubarraySum(int[] arr, int n) {
+		long sum=0, inSum=0L;
+
+		// sum is used to keep track of the maximum sum that can occur
+		// inSum keeps track of the maximum sum that can occur --continuously adding elem
+
+		for(int elem:arr){
+			inSum += elem;
+
+			if(inSum>sum) sum=(long)inSum;
+			if(inSum<0) inSum=0L;       // If inSum becomes <0 it means we can leave the previous subarray and start from new one 
+		}
+
+		return sum;
+	}
+}

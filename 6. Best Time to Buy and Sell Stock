@@ -1,0 +1,22 @@
+// Author :- Nitish ,    Github:- c-oco
+
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution{
+    public static int maximumProfit(ArrayList<Integer> prices){
+        int minPriceAtSomeMinute=prices.get(0);     // Let 0th be the minPrice we have seen till now
+
+        int myProfit=0;                // For now max Profit is 0 for me
+
+        for(int price:prices){            
+            if(price<minPriceAtSomeMinute)                // At some time i can get min price than my previous min Price
+               minPriceAtSomeMinute = price;
+
+            myProfit = Math.max(myProfit, price-minPriceAtSomeMinute);   // maxPrice at ith Time, ith time 0 can be profit if that price is min than previous min price 
+        }
+
+        return myProfit;          // Return profit you earned
+    }
+}

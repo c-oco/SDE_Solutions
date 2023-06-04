@@ -1,0 +1,129 @@
+// Author :- Nitish ,    Github:- c-oco
+
+/*                                     Traversing the whole list   */
+
+
+/****************************************************************
+ Following is the class structure of the Node class:
+
+ class Node {
+     public int data;
+     public Node next;
+     public Node prev;
+
+     Node()
+     {
+         this.data = 0;
+         this.next = null;
+         this.prev = null;
+     }
+
+     Node(int data)
+     {
+         this.data = data;
+         this.next = null;
+         this.prev = null;
+     }
+
+     Node(int data, Node next)
+     {
+         this.data = data;
+         this.next = next;
+         this.prev = next;
+     }
+ };
+ *****************************************************************/
+
+public class Solution
+{
+    public static Node removeKthNode(Node head, int K)
+    {
+        Node curr=head;
+
+        while(curr.next!=null) curr = curr.next;   // Traverse till last of the node
+
+        Node last = curr;                 // Save the last node
+
+        while(K-->1) curr = curr.prev;     // come back till you reach that node
+
+        // System.out.println(curr);
+
+        if(curr==head){                   // If we have to remove head
+            head = head.next;
+            if(head!=null)                // If the next node is null i.e only one node in list
+              head.prev = null;
+        }
+        else if(last==curr){              // If we have to remove tail node  
+            curr.prev.next = null;   
+        }
+        else{
+            Node pre = curr.prev, nex = curr.next ;    // Store prev and next node and join them 
+            pre.next = nex;
+            nex.prev = pre;
+        }
+
+        return head;                 
+    }
+}
+
+
+/*                                    Using the n node gap in between            */
+
+
+/****************************************************************
+
+ Following is the class structure of the Node class:
+
+ class Node {
+     public int data;
+     public Node next;
+     public Node prev;
+
+     Node()
+     {
+         this.data = 0;
+         this.next = null;
+         this.prev = null;
+     }
+
+     Node(int data)
+     {
+         this.data = data;
+         this.next = null;
+         this.prev = null;
+     }
+
+     Node(int data, Node next)
+     {
+         this.data = data;
+         this.next = next;
+         this.prev = next;
+     }
+ };
+
+ *****************************************************************/
+
+public class Solution
+{
+    public static Node removeKthNode(Node head, int K)
+    {
+        Node temp = new Node(0);        // Temporary head
+        temp.next = head;               // temp next will point to head
+        Node slow=temp;
+        Node fast=temp;
+
+        for(int i=1; i<=K; i++) fast = fast.next;   // We will tell the fast to move n nodes first
+
+        while(fast.next!=null){                  // Now slow and fast move simusimultaneously with a gap of n nodes in between
+            slow = slow.next;
+            fast = fast.next;
+        }               
+
+        Node pre=slow, nex=slow.next.next;       // Store the prev and next and join
+        pre.next = nex;
+        if(nex!=null)                            // If we had to delete the head
+          nex.prev = pre;
+
+        return temp.next;
+    }
+}
