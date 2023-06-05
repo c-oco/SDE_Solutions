@@ -1,0 +1,78 @@
+// Author :- Nitish ,    Github:- c-oco
+
+/*                               Use of HashMap          */
+
+import java.io.*;
+import java.util.* ;
+
+import java.util.ArrayList;
+
+public class Solution 
+{
+    public static ArrayList<Integer> majorityElementII(ArrayList<Integer> arr) 
+    {
+        HashMap<Integer, Integer> freq = new HashMap<>();      // Stores frequency of each element
+
+        for(Integer elem:arr)
+           freq.put(elem, freq.getOrDefault(elem, 0)+1);
+
+        ArrayList<Integer> ans = new ArrayList<>();         // Stores ans
+
+        for(Integer key:freq.keySet())
+           if((int)freq.get(key)>arr.size()/3)             // Push each element which is majority
+               ans.add(key);
+
+        return ans;
+    }
+}
+
+
+
+/*                           Use of Voting Algorithm                 */
+
+
+import java.io.*;
+import java.util.* ;
+
+import java.util.ArrayList;
+
+public class Solution 
+{
+    public static ArrayList<Integer> majorityElementII(ArrayList<Integer> arr) 
+    {
+        ArrayList<Integer> ans = new ArrayList<>();         // Stores ans
+
+        int c1=0, c2=0;
+        int can1=-1, can2=-1;
+        
+        for(int n:arr){                       // Traverse and choose two candidates
+            if(c1==0 && n!=can2){
+                can1 = n;
+                c1 = 1;
+            }
+            else if(c2==0 && n!=can1){
+                can2 = n;
+                c2 = 1;
+            }
+            else if(n==can1) c1++;
+            else if(n==can2) c2++;
+            else{
+                c1--;
+                c2--;
+            }
+        }
+        
+        c1=0; c2=0;
+        for(int n:arr){
+            if(n==can1) c1++;
+            if(n==can2) c2++;
+        }
+
+        // There can be at max 2 majority at a time
+        
+        if(c1>arr.size()/3) ans.add(can1);
+        if(c2>arr.size()/3 && can1!=can2) ans.add(can2);    // check if both candidates are not same 
+
+        return ans;
+    }
+}

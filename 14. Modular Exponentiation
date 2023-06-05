@@ -1,0 +1,27 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+/*                                     Make the pow half if its even        */
+
+import java.io.*;
+import java.util.* ;
+
+public class Solution {
+    public static int modularExponentiation(int x, int n, int m) {
+        long X=(long)x, N=(long)n, M=(long)m;
+        long ans = 1L;
+
+        while(N>0){
+            if(N%2==1){           // Decrease by 1 to make it even
+                ans = (ans*X)%M;
+                N--;
+            }
+            else{                  // If power is even we can divide we have to calulate only half part
+                X = (X*X)%M;
+                N /= 2;
+            }
+        }
+
+        return (int)ans;
+    }
+}

@@ -1,0 +1,32 @@
+// Author :- Nitish ,    Github:- c-oco
+
+/*                               Can use HashMap  also    */
+
+/*                                Using voting algorithm    */
+
+import java.io.*;
+import java.util.* ;
+
+public class Solution {
+	public static int findMajority(int[] arr, int n) {
+		if(n==1) return arr[0];
+        
+		int count=0;
+		int candidate=-1;
+
+		for(int can:arr){
+			if(count==0){
+				candidate = can;          // Choose one candidate
+			}
+
+			if(candidate==can) count++;     // Vote in every turn
+			else count--;
+		}
+
+		count=0;
+		for(int can:arr)                  // To check if it is really majority or not
+		   if(candidate==can) count++;
+
+		return (count>n/2)?candidate:-1;
+	}
+}

@@ -1,0 +1,29 @@
+// Author :- Nitish ,    Github:- c-oco
+
+import java.io.*;
+import java.util.* ;
+
+/****************************************************************
+
+    Following is the class structure of the LinkedListNode class:
+
+    class LinkedListNode<T> {
+        T data;
+        LinkedListNode<T> next;
+        LinkedListNode(T data)
+        {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+*****************************************************************/
+
+public class Solution {
+	public static void deleteNode(LinkedListNode<Integer> node) {
+        // Since it will not be tail node
+
+		node.data = node.next.data;       // copy data of next node
+        node.next = node.next.next;       // skip next node
+	}
+}

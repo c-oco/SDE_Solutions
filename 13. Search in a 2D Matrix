@@ -1,0 +1,26 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+/*                           Using Binary Search       */
+
+import java.util.ArrayList;
+public class Solution {
+    static boolean searchMatrix(ArrayList<ArrayList<Integer>> mat, int target) {
+        int n=mat.size(), m=mat.get(0).size();
+        int lb=0, ub=n*m-1;
+
+        while(lb<=ub){                     // Binary Search
+            int mid = lb + (ub-lb)/2;
+
+            if(mat.get(mid/m).get(mid%m)==target){               // Dividing by m because every new row starts after m elements
+                return true;
+            }
+            else if(mat.get(mid/m).get(mid%m)>target)
+                ub = mid-1;
+            else
+                lb = mid+1;
+        }
+
+        return false;
+    }
+}
