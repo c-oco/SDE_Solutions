@@ -1,0 +1,42 @@
+// Author :- Nitish ,    Github:- c-oco
+
+/*                                      Using HashSet        */
+
+import java.util.HashSet;
+
+public class Solution {
+
+    public static boolean detectCycle(Node head) {
+        HashSet<Node> presence = new HashSet<>();              // Stores Nodes
+
+        while(head!=null){
+            if(presence.contains(head)) return true;           // Check if the node is already visited or not
+
+            presence.add(head);                                // Add if not visited
+            head = head.next;
+        }
+
+        return false;
+    }
+}
+
+
+/*                              Using slow and fast pointer        (in case of cycle they will meet at some point)      */
+
+import java.util.HashSet;
+
+public class Solution {
+
+    public static boolean detectCycle(Node head) {
+        Node slow=head, fast=head;
+
+        while(fast!=null && fast.next!=null){
+            slow = slow.next;
+            fast = fast.next.next;
+            
+            if(slow==fast) return true;                      // In case of cycle
+        }
+
+        return false;
+    }
+}

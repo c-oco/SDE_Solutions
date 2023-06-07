@@ -1,0 +1,68 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static long getInversions(long arr[], int n) {
+        return mergeSort(arr, 0, n-1);
+    }
+
+    public static long mergeSort(long arr[], int l, int r){
+        int mid = l + (r-l)/2;
+        
+        long inversions = 0L;         // Stores no of inversions
+        if(l<r){
+            inversions += mergeSort(arr, l, mid);
+            inversions += mergeSort(arr, mid+1, r);
+            
+            inversions += merge(arr, l, mid, r);
+        }
+
+        return inversions;
+    }
+
+    public static long merge(long arr[], int l, int m, int r){
+        int i=0, j=0;
+        int sL=m-l+1, sR=r-m;
+        
+        long inversion=0L;
+        long L[] = new long[sL];    // Temp left array to store left part
+        long R[] = new long[sR];    // Temp right array to store right part
+
+        // Substituting the left and right array values in temp arrays
+        while(i<sL){
+            L[i] = arr[l+i];
+            i++;
+        }
+
+        while(j<sR){
+            R[j] = arr[m+j+1];
+            j++;
+        }
+        
+        i=0; j=0;
+        int k=l;
+        while(i<sL && j<sR){
+            if(L[i]<=R[j])
+                arr[k++] = L[i++];
+            else{
+                /* If an element in left array is greater than an element in the right array,
+                then all elements after that can form inversion pairs with that element of right array. */
+
+                inversion += sL-i;
+                arr[k++] = R[j++];
+            }
+        }
+
+        while(i<sL){
+            arr[k++] = L[i++];
+        }
+
+        while(j<sR){
+            arr[k++] = R[j++];
+        }
+        
+        return inversion;
+    }
+}

@@ -1,0 +1,61 @@
+// Author :- Nitish ,    Github:- c-oco
+
+import java.io.*;
+import java.util.* ;
+
+/****************************************************************
+
+    Following is the class structure of the Node class:
+
+        class Node
+        {
+        public:
+	        int data;
+	        Node *next;
+	        Node(int data)
+	        {
+		        this->data = data;
+		        this->next = NULL;
+	        }
+        };
+
+*****************************************************************/
+
+public class Solution {
+	public static Node getListAfterReverseOperation(Node head, int n, int b[]) {
+		Node ansHead=head, H=null;               // H holds head of answer and also help in atttaching the k size lists
+        // ansHead just holds the head of list
+
+		int i=0;
+		while(i<n && head!=null){
+			Node firstNode = head;                 // Store first node of each k size list
+
+			Node curr=head, prev=null, temp=null;  
+			while(curr!=null && b[i]-->0){         // Reverse the list of size b[i]
+				temp = curr.next;
+
+				curr.next = prev;
+				prev = curr;
+				curr = temp;
+			}
+            
+			//System.out.println(prev.data);
+
+			if(prev!=null){                       // If only we have reversed some b[i] size
+				if(H==null){                      // When first time we reverse 
+				    H = prev;                     // Popultaing both heads 
+				    ansHead = prev;
+			    }else{
+			    	H.next = prev;                // else just point to the prev to attach
+			    }
+    
+                H = firstNode;                    // Now point to last node of the reversed b[i] size list
+			    H.next = curr;                    // Attach the remaining original list 
+			    head = curr;                      // Point the head to remaining portion of original list
+			}
+			i++;
+		} 
+
+		return ansHead;
+	}
+}

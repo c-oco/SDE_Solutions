@@ -1,0 +1,63 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+/****************************************************************
+
+ Following is the class structure of the Node class:
+
+ class Node {
+     public int data;
+     public Node next;
+
+     Node()
+     {
+         this.data = 0;
+         this.next = null;
+     }
+     Node(int data)
+     {
+         this.data = data;
+         this.next = null;
+     }
+     Node(int data, Node next)
+     {
+         this.data = data;
+         this.next = next;
+     }
+ }
+
+ *****************************************************************/
+
+public class Solution {
+    public static Node firstNode(Node head) {
+        if(head==null || head.next==null) return null;
+
+        Node slow=head, fast = head;
+        
+        int skip=0;                            // Counts how many node we need to skip
+        while(fast!=null && fast.next!=null){
+            slow = slow.next;
+            fast = fast.next.next;
+            skip++;
+
+            if(slow==fast) break;              // In case of cycle they meet
+        }
+
+        // System.out.println(skip);
+
+        if(slow!=fast) return null;           // Means no cycle exists
+
+        fast = head;
+        while(skip-->0){                      // Station the fast pointer after skippping nodes from start
+            fast = fast.next;
+        }
+        
+        slow = head;
+        while(slow!=fast && fast!=null){     // Keep traversing till we find the node where cycle starts
+            slow = slow.next;
+            fast = fast.next;
+        }
+
+        return fast;
+    }
+}

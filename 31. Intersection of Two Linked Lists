@@ -1,0 +1,67 @@
+// Author :- Nitish ,    Github:- c-oco
+
+/****************************************************************
+
+ Following is the class structure of the Node class:
+
+ class Node {
+     public int data;
+     public Node next;
+
+     Node()
+     {
+         this.data = 0;
+         this.next = null;
+     }
+     Node(int data)
+     {
+         this.data = data;
+         this.next = null;
+     }
+     Node(int data, Node next)
+     {
+         this.data = data;
+         this.next = next;
+     }
+ }
+
+ *****************************************************************/
+
+public class Solution {
+    public static int findIntersection(Node firstHead, Node secondHead) {
+        if(firstHead==null || secondHead==null) return -1;     // If any of the list is empty, so no intersection point
+		
+		Node h1=firstHead, h2=secondHead;
+		int l1=length(h1), l2=length(h2);            // Find length of each of the list
+        
+		if(l1>l2){                                   // We shift the pointer upto the calculated difference
+			for(int i=1; i<=l1-l2; i++)
+			   firstHead = firstHead.next;
+		}
+		else{
+			for(int i=1; i<=l2-l1; i++)
+			   secondHead = secondHead.next;
+		}
+        
+		// System.out.println(firstHead+" "+secondHead);
+		
+		while(firstHead!=null && secondHead!=null){     // Slow and fast pointer 
+			if(firstHead==secondHead)                   // slow pointer will reach the intersection, as we have already covered the difference in no of nodes in both the list
+			    return firstHead.data;
+
+			firstHead = firstHead.next;
+			secondHead = secondHead.next;
+		}
+
+		return -1;
+	}
+
+	public static int length(Node curr){           // Calculates length
+		int l=0;
+		while(curr!=null){
+            curr = curr.next; l++;
+        }
+
+		return l;
+    }
+}

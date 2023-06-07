@@ -1,0 +1,96 @@
+// Author :- Nitish ,    Github:- c-oco
+
+/*                                    Memoization  or Recursion             */
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	public static int uniquePaths(int m, int n) {
+		int[][] dp=new int[m][n];
+
+		for(int[] row:dp)
+		   Arrays.fill(row, -1);
+
+		return memo(m-1, n-1, dp);
+	}
+
+	public static int memo(int m, int n, int[][] dp){
+		if(m<0 || n<0) return 0;                               // If m and n go out of boundary
+		if(m==0 && n==0) return 1;                             // When we reach 0,0 we have one path so return it
+
+		if(dp[m][n]!=-1) return dp[m][n];                      // We calulate the path if not previously calulated
+
+		int top = memo(m-1, n, dp);                            // Going from top to bottom so down become top, and right becomes left
+		int left = memo(m, n-1, dp);
+
+		return dp[m][n] = top+left;
+	}
+}
+
+
+/*                                    Tabulation                 */
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	public static int uniquePaths(int m, int n) {
+		int[][] dp=new int[m][n];
+
+		Arrays.fill(dp[0], 1);                                 // Fill first row with 1 as it will always be 1
+
+		for(int i=1; i<m; i++){                                
+			dp[i][0] = 1;                                      // First coloumn of each row will always be 1;
+			for(int j=1; j<n; j++){
+               dp[i][j] = dp[i-1][j] + dp[i][j-1];             // Using previous values, dp[i-1][j] stores top value and dp[i][j-1] stores left value
+			}
+		}
+
+		return dp[m-1][n-1];
+	}
+}
+
+
+/*                                   Tabulation with Space Optimization      */
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	public static int uniquePaths(int m, int n) {
+		int []prev = new int[n];                             // Using two 1D arrays
+
+		Arrays.fill(prev, 1);    
+
+		for(int i=1; i<m; i++){
+			int []curr = new int[n];                        // curr stores curr calculated values
+            curr[0] = prev[0];
+
+			for(int j=1; j<n; j++){
+               curr[j] = prev[j] + curr[j-1];               // Prev stores previous row values 
+			}
+			prev = curr;                               
+		}
+
+		return prev[n-1];
+	}
+}
+
+
+/*                                 Using Combination               */
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	public static int uniquePaths(int m, int n) {
+		if(m==1 || n==1) return 1;
+        
+
+		int res=1, j=1;
+		for(int i=Math.max(m-1,n-1)+1; i<=m+n-2; i++, j++){        // performing the
+			res *= i;
+			res /= j;
+		}
+
+		return res;
+	}
+}

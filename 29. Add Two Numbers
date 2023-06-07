@@ -1,0 +1,57 @@
+// Author :- Nitish ,    Github:- c-oco
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode head1, ListNode head2) {
+        int carry=0;
+        
+        ListNode curr=head1, prev=null;                       // We will store in first list , prev take care of last visited node
+
+        while(curr!=null && head2!=null){                     // Traverse till both list have equal number of nodes
+            int val = curr.val + head2.val + carry;
+            curr.val = val%10;
+            carry = val/10;
+            
+            prev = curr;                                     // Stores previous visited node
+            curr = curr.next;
+            head2 = head2.next;
+        }
+        
+        //System.out.println(carry);
+
+        while(head2!=null){                                   // When list 2 is bigger
+            int val = head2.val + carry;
+            head2.val = val%10;
+            carry = val/10;
+            
+            prev.next = head2;                               // Using prev to point to next nodes(or curr node of list 2), as curr will be null now
+            prev = prev.next;
+            head2 = head2.next;
+        }
+        
+        while(curr!=null){                                   // Since first list is bigger 
+            int val = curr.val + carry;
+            curr.val = val%10;
+            carry = val/10;
+            
+            prev = curr;                                    // Stores previous visited node
+            curr = curr.next;
+        }
+
+        if(carry==1){                                        // When there is a carry
+            ListNode last=new ListNode(carry);               
+            prev.next = last;                                // Using prev to attach to last node
+        }
+
+        return head1;
+    }
+}

@@ -1,0 +1,77 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution 
+{
+    public static int reversePairs(ArrayList<Integer> arr) 
+    {
+        return mergeSort(arr, 0, arr.size()-1);
+    }
+
+    public static int mergeSort(ArrayList<Integer> arr, int l, int r){
+        int mid = l + (r-l)/2;
+        
+        int inversions = 0;         // Stores no of inversions
+        if(l<r){
+            inversions += mergeSort(arr, l, mid);
+            inversions += mergeSort(arr, mid+1, r);
+            
+            inversions += merge(arr, l, mid, r);
+        }
+
+        return inversions;
+    }
+
+    public static int merge(ArrayList<Integer> arr, int l, int m, int r){
+        int i=0, j=0;
+        int sL=m-l+1, sR=r-m;
+        
+        int inversion=0;
+        int L[] = new int[sL];           // Temp left array to store left part
+        int R[] = new int[sR];           // Temp right array to store right part
+
+        // Substituting the left and right array values in temp arrays
+        while(i<sL){
+            L[i] = arr.get(l+i);
+            i++;
+        }
+
+        while(j<sR){
+            R[j] = arr.get(m+j+1);
+            j++;
+        }
+        
+        i=0;
+        j=0;
+        while(i<sL){                       // Check if any reverse pairs exists
+            while(j<sR && arr.get(l+i) > 2*arr.get(m+j+1)){
+              j++;
+            }
+            inversion += j;
+            i++;
+        }
+        
+        i=0; j=0;
+        int k=l;
+        while(i<sL && j<sR){              // Substituting the values in original array
+            if(L[i]<=R[j])
+                arr.set(k++, L[i++]);
+            else
+                arr.set(k++, R[j++]);
+        }
+
+        while(i<sL){
+            arr.set(k++, L[i++]);
+        }
+
+        while(j<sR){
+            arr.set(k++, R[j++]);
+        }
+        
+        return inversion;
+    }
+}

@@ -1,0 +1,71 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+/****************************************************************
+
+ Following is the class structure of the Node class:
+
+ class Node {
+     public int data;
+     public Node next;
+
+     Node()
+     {
+         this.data = 0;
+         this.next = null;
+     }
+
+     Node(int data)
+     {
+         this.data = data;
+         this.next = null;
+     }
+
+     Node(int data, Node next)
+     {
+         this.data = data;
+         this.next = next;
+     }
+ };
+
+ *****************************************************************/
+
+public class Solution {
+    public static Node rotate(Node head, int k) {
+        if(k==0) return head;           // If no rotations
+
+        int l=length(head);
+        k=k%l;
+
+        if(k==0) return head;          // If length of list is == k
+
+        int i=1;
+        Node curr=head, lastNode=null;
+        
+        while(curr.next!=null){
+            if(i++==l-k)                  // Storing the last Node of the rotated list
+              lastNode = curr;
+
+            curr = curr.next;
+        }
+
+        // System.out.println(newHead+" "+newHead.data);
+
+        Node newHead = lastNode.next;         // 
+        lastNode.next = null;              // Avoiding cycle by pointing last node to null
+
+        curr.next = head;                 // Connecting the rotated portion of list to the head of original list  
+
+        return newHead;
+    }
+
+    public static int length(Node head){
+        int l=0;
+        while(head!=null){
+            l++;
+            head = head.next;
+        }
+
+        return l;
+    }
+}
