@@ -1,0 +1,44 @@
+// Author :- Nitish ,    Github:- c-oco
+
+/*                                    Brute Force can be used               */
+
+1. We need to generate all pairs see which statisfy the sum
+2. Then sort pairs according with respect to their first eleemnt
+
+/*                                     Use of HashMap                      */
+
+import java.io.*;
+import java.util.* ; 
+
+public class Solution{
+    public static List<int[]> pairSum(int[] arr, int s) {
+        HashMap<Integer, Integer> freq = new HashMap<>();  // Stores frequency of each element
+        List<int[]> pairs = new ArrayList<>();             // Stores pairs
+ 
+        for(int a:arr)
+            freq.put(a, freq.getOrDefault(a, 0)+1);       
+
+        Arrays.sort(arr);                             // Sort to locate pairs with minimum first value
+
+        for(int a:arr){
+            if(freq.containsKey(a)){                 
+                int f = freq.get(a);
+                
+                // Since we will use a now so decrease its frequency if 1 then remove it
+                if(f==1)              
+                   freq.remove(a);
+                else freq.put(a, f-1);
+            }
+
+            if(freq.containsKey(s-a)){                // If 2nd element exists
+                int f = freq.get(s-a);
+
+                while(f-->0)                          // Insert pairs equal to the freq of 2nd element
+                    pairs.add(new int[]{a, s-a});
+            }
+        }
+
+        return pairs;
+    }
+}
+

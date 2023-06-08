@@ -1,0 +1,60 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.io.*;
+import java.util.* ;
+
+/*************************************************************
+
+    Following is the LinkedListNode class structure
+
+    class LinkedListNode<T> {
+	    T data;
+	    LinkedListNode<T> next;
+	    LinkedListNode<T> random;
+
+	    public LinkedListNode(T data) {
+		    this.data = data;
+	    }
+    }
+
+*************************************************************/
+
+public class Solution {
+	public static LinkedListNode<Integer> cloneRandomList(LinkedListNode<Integer> head) {
+		LinkedListNode<Integer> Head=new LinkedListNode<Integer>(0), H=Head;
+		
+		// Stores the index of node and the random node, which the index node points
+		HashMap<Integer, LinkedListNode<Integer>> mapRandom = new HashMap<>();
+
+		// Stores the node at the index both of the original list and newly made list
+		HashMap<LinkedListNode<Integer>, LinkedListNode<Integer>> mapNodeByIndex = new HashMap<>(); 
+
+		LinkedListNode<Integer> curr = head;
+        
+		int i=1;
+		while(curr!=null){                    // Creating new list
+			Head.next = new LinkedListNode<Integer>(curr.data);
+            
+			mapRandom.put(i++, curr.random);
+			mapNodeByIndex.put(curr, Head.next);
+			Head = Head.next; 
+			curr = curr.next;
+		}
+        
+		i=1;
+		curr = H.next;
+		while(curr!=null){
+			LinkedListNode<Integer> random = mapRandom.get(i++); // Find the random node attached to the node of this index
+
+			if(random!=null)
+			    curr.random = mapNodeByIndex.get(random);    
+			else
+			    curr.random = null;              // If this index node does not point to any random node
+			
+			curr = curr.next;
+		}
+
+		return H.next;               // Return the Head of new list form
+	}
+}
