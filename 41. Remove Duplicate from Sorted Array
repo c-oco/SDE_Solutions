@@ -1,0 +1,25 @@
+// Author :- Nitish ,    Github:- c-oco
+
+/*                                  HashSet can be used           */
+
+/*                                   Two Pointers                 */
+
+import java.util.ArrayList;
+
+public class Solution {
+	public static int removeDuplicates(ArrayList<Integer> arr,int n) {
+		int i=0, j=1;
+
+		while(j<n){
+			while(j<n && arr.get(j-1).equals(arr.get(j))) j++;     // Keep skipping similar values
+
+			if(j<n){                                     // If still inside array list
+               arr.set(i+1, arr.get(j));                 // Put the different value in place of similar value
+			   i++;                                      // Go to next index
+			}
+			j++;
+		}
+
+		return i+1;         // i+1 will give the size of arraylist containing distinct numbers in sorted order 
+	}
+}

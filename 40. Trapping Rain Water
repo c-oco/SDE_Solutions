@@ -1,0 +1,94 @@
+// Author :- Nitish ,    Github:- c-oco
+
+/*                                        Brute Force  TC :- O(n^2)                         */
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static long getTrappedWater(long[] arr, int n) {
+        if(n<=2) return 0L;
+
+        long water = 0;
+
+        for(int i=0; i<n; i++){
+            long left=0, right=0;                           // Calculate left maximum and right maximum for each i 
+            int j=i;
+
+            while(j>=0){
+               left = Math.max(left, arr[j]);
+               j--;
+            }
+
+            j=i;
+            while(j<n){
+               right = Math.max(right, arr[j]);
+               j++;
+            }
+
+            water += Math.min(left, right) - arr[i];        // Calculate water stored for each i 
+        }
+
+        return water;
+    }
+}
+
+
+/*                                Pre calculating left maximum and right maximum  TC :- O(3*n)               */
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static long getTrappedWater(long[] arr, int n) {
+        if(n<=2) return 0L;
+
+        long water = 0;
+        
+        long[] mLeft = new long[n];
+        long[] mRight = new long[n];
+
+        mLeft[0] = arr[0];
+        for(int i=1; i<n; i++) mLeft[i] = Math.max(mLeft[i-1], arr[i]);            // Calculate left maximum for each i 
+
+        mRight[n-1] = arr[n-1];
+        for(int j=n-2; j>=0; j--) mRight[j] = Math.max(mRight[j+1], arr[j]);       // Calculate right maximum for each i 
+
+        for(int i=0; i<n; i++)
+            water += Math.min(mLeft[i], mRight[i]) - arr[i];
+
+        return water;
+    }
+}
+
+
+/*                                Two Pointers   TC :- O(n)                            */
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static long getTrappedWater(long[] arr, int n) {
+        if(n<=2) return 0L;
+
+        long water = 0;
+        
+        int i=0, j=n-1;
+        long left=0, right=0;
+        while(i<j){
+            if(arr[i]<=arr[j]){                             // If currently right side is has bigger bar
+                if(arr[i]>left) left = arr[i];              // If ith can be the new maximum left
+                else water += left - arr[i];                // If no, then add the water
+                i++;
+            }
+            else{                                           // If current left side has biggest bar
+                if(arr[j]>right) right = arr[j];             // If jth can be the new maximum right
+                else water += right - arr[j];               // If no, then add the water
+                j--;
+            }
+        }
+
+        return water;
+    }
+}
+
+
+
+

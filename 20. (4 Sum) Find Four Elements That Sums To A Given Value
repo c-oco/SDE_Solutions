@@ -1,0 +1,58 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+/*                                    Using 2 pointers   Tc :- O( n^3 )                  */ 
+
+import java.io.*;
+import java.util.* ;
+
+public class Solution {
+  public static String fourSum(int[] arr, int target, int n) {
+        Arrays.sort(arr);                      // Sort the array
+
+        for(int i=0; i<n-3; i++){
+           for(int j=i+1; j<n-2; j++){            // Fixing 1st and 2nd elements            
+           
+                int lb=j+1, ub=n-1;                  // Search in remaining space, min will always be 2
+                int remSum = target-arr[i]-arr[j];   // remaining Sum 
+     
+                while(lb<ub){
+                    if(arr[lb]+arr[ub]==remSum)              // If found
+                       return "Yes";
+                    else if(arr[lb]+arr[ub]>remSum) ub--;
+                    else lb++;
+                }
+           }
+        }
+
+        return "No";
+  }
+}
+
+
+/*                                    Using HashMap   TC :- O( n^2 * log(n) )                       */
+
+import java.io.*;
+import java.util.* ;
+
+public class Solution {
+  public static String fourSum(int[] arr, int target, int n) {
+      Arrays.sort(arr);                                          // Sort the array
+      
+      HashMap<Long, int[]> map = new HashMap<>(); 
+
+      for(int i=0; i<n-1; i++){
+        for(int j=i+1; j<n; j++){                                      // Fixing 1st and 2nd elements            
+            long remSum = (long)target-(long)arr[i]-(long)arr[j];
+
+            if(map.containsKey(remSum)){
+               int[] p = map.get(remSum);
+               if(p[0]!=i && p[0]!=j && p[1]!=i && p[1]!=j) return "Yes";
+            }
+            map.put((long)arr[i]+(long)arr[j], new int[]{i, j});
+        }
+      }
+      return "No";
+  }
+}
+
