@@ -1,0 +1,26 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution
+{
+public static int findMinimumCoins(int amount)
+    {   
+        // All types of coins
+        int currency[] = {1,2,5,10,20,50,100,500,1000};
+        
+        int coins = 0;      // Total stupid Dora will get
+
+        int i=8;
+        while(i>=0){
+            if(amount>=currency[i]){          // If amount is greater than current coin
+                coins += (int)Math.floor(amount*1.0/currency[i]);    // Maximum coins of current ith type coin
+                amount = amount%currency[i];                    // Remaining amount
+            }
+            i--;
+        }
+
+        return coins;
+    }
+}

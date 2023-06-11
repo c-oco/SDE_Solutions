@@ -1,0 +1,57 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.* ;
+import java.io.*; 
+/****************************************************************
+
+    Following is the class structure of the Pair class:
+
+        class Pair
+        {
+        	int weight;
+	        int value;
+	        Pair(int weight, int value)
+	        {
+		        this.weight = weight;
+		        this.value = value;
+	        }
+	        
+        }
+        
+*****************************************************************/
+
+
+public class Solution {
+    public static double maximumValue(Pair[] arr, int n, int w) {
+    
+		Arrays.sort(arr, new Comparator<Pair>(){        // Sort with respect to value:weight ratio, so that v/w in descending order
+            @Override
+            public int compare(Pair a, Pair b) 
+            {
+                double r1 = a.value*1.0/a.weight; 
+                double r2 = b.value*1.0/b.weight; 
+                if(r1 < r2) return 1; 
+                else if(r1 > r2) return -1; 
+                else return 0; 
+            }
+        }); 
+        
+        double value = 0.0; 
+        
+        for(int i=0; i<n; i++) {
+            if(arr[i].weight<=w){           // If current items weight is less than sack's current capacity
+                w -= arr[i].weight;          // Update capacity of sack
+                value += arr[i].value;       // Add the value of item collected
+            }
+            else{
+				// Calculate the value of the remaining weight w with respect to current item 
+				
+                value += ((double)arr[i].value / (double)arr[i].weight) * (double)w;
+                break;
+            }
+        }
+
+		return value;
+    }
+}
