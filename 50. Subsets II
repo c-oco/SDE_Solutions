@@ -1,0 +1,64 @@
+// Author :- Nitish ,    Github:- c-oco
+
+/*                               Using HashSet and Generating all subsets                 */
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static ArrayList<ArrayList<Integer>> uniqueSubsets(int n, int arr[]) {
+        Set<ArrayList<Integer>> ans = new HashSet<>();
+        ArrayList<Integer> sub = new ArrayList<Integer>();
+        
+        Arrays.sort(arr);             // Sort the array
+
+        subset(0, arr, ans, sub);      // Generating all subsets
+
+        return new ArrayList<>(ans);
+    }
+
+    public static void subset(int i, int[] arr, Set<ArrayList<Integer>> ans, ArrayList<Integer> sub){
+        if(i==arr.length){
+            if(sub.size()!=0){
+                ans.add(new ArrayList<>(sub));
+            }
+            return ;
+        }
+        
+        sub.add(arr[i]);                // Take the element
+        subset(i+1, arr, ans, sub);
+        sub.remove(sub.size()-1);
+
+        subset(i+1, arr, ans, sub);     // Not take the element
+    }
+}
+
+
+/*                              Generating only unique subsets               */
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static ArrayList<ArrayList<Integer>> uniqueSubsets(int n, int arr[]) {
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+        ArrayList<Integer> sub = new ArrayList<Integer>();
+        
+        Arrays.sort(arr);             // Sort the array
+
+        subset(0, arr, ans, sub);
+
+        return ans;
+    }
+
+    public static void subset(int j, int[] arr, ArrayList<ArrayList<Integer>> ans, ArrayList<Integer> sub){
+        ans.add(new ArrayList<>(sub));
+        
+        for(int i=j; i<arr.length; i++){
+            if(i!=j && arr[i]==arr[i-1]) continue;      // Skipping same elements
+
+            sub.add(arr[i]);                
+            subset(i+1, arr, ans, sub);
+            sub.remove(sub.size()-1);
+        }
+    }
+}

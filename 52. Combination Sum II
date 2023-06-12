@@ -1,0 +1,35 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.*;
+public class Solution 
+{
+    public static ArrayList<ArrayList<Integer>> combinationSum2(ArrayList<Integer> arr, int n, int target)
+    {
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+        ArrayList<Integer> sub = new ArrayList<>();
+
+        Collections.sort(arr);
+        
+        subset(0, target, arr, ans, sub);
+
+        return ans;
+    }
+
+    public static void subset(int j, int target, ArrayList<Integer> arr, ArrayList<ArrayList<Integer>> ans, ArrayList<Integer> sub){
+        if(target==0){
+           ans.add(new ArrayList<>(sub));
+           return ;   
+        }
+        
+        for(int i=j; i<arr.size(); i++){
+            if(i!=j && arr.get(i)==arr.get(i-1)) continue;     // Skip
+
+            if(arr.get(i)>target) break;     // Element is greater than target remaining
+
+            sub.add(arr.get(i));
+            subset(i+1, target-arr.get(i), arr, ans, sub);
+            sub.remove(sub.size()-1);
+        }
+    }
+}

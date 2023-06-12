@@ -1,0 +1,26 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static ArrayList<Integer> subsetSum(int num[]) {
+        ArrayList<Integer> ans = new ArrayList<>();
+
+        subset(0, 0, num, ans);           
+        
+        Collections.sort(ans);            // Sort the values of sum
+
+        return ans;
+    }
+
+    public static void subset(int i, int sum, int num[], ArrayList<Integer> ans){
+       if(i==num.length){
+           ans.add(sum);                // add sum(sum of the subset) to ans
+           return ;
+       }
+       
+       subset(i+1, sum, num, ans);            // we do not take ith element of array
+       subset(i+1, sum+num[i], num, ans);     // We take ith element
+    }
+}

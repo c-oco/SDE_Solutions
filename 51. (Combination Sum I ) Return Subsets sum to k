@@ -1,0 +1,31 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.ArrayList;
+
+public class Solution 
+{
+    public static ArrayList<ArrayList<Integer>> findSubsetsThatSumToK(ArrayList<Integer> arr, int n, int k) 
+	{
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+        ArrayList<Integer> sub = new ArrayList<>();
+
+        subset(0, 0, k, arr, ans, sub);
+
+        return ans;
+    }
+
+    public static void subset(int i, int sum, int k, ArrayList<Integer> arr, ArrayList<ArrayList<Integer>> ans, ArrayList<Integer> sub){
+        if(i==arr.size()){
+            if(sum==k)
+              ans.add(new ArrayList<>(sub));            // add sum(sum of the subset) to ans
+            return ;
+        }
+        
+        subset(i+1, sum, k, arr, ans, sub);             // we do not take ith element of array
+ 
+        sub.add(arr.get(i));                         // Add ith element to sub list
+        subset(i+1, sum+arr.get(i), k, arr, ans, sub);     // We take ith element
+        sub.remove(sub.size()-1);                    // Removing ith element that was added
+    }
+}
