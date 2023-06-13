@@ -1,0 +1,62 @@
+// Author :- Nitish ,    Github:- c-oco
+
+/*                                    Generate all Substrings           */
+
+
+/*                                    Use of two pointers (left and right)           */
+
+import java.util.* ;
+import java.io.*; 
+public class Solution 
+{
+	public static int uniqueSubstrings(String input) 
+    {
+        int n=input.length(), len=0;
+        
+		Set<Character> set = new HashSet<>();
+
+		int l=0, r=0;
+		for( r=0; r<n; r++){
+			if(set.contains(input.charAt(r))){       // If char exists
+
+				while(l<r && set.contains(input.charAt(r))){   // Remove all previous existence of the char
+					set.remove(input.charAt(l));
+					l++;
+				}
+			}
+			
+			set.add(input.charAt(r));         // Add new char
+            len = Math.max(r-l+1, len);       // Calculate length
+		}
+
+		return len;
+	}
+}
+
+
+/*                                     Use of HashMap and last seen           */
+
+import java.util.* ;
+import java.io.*; 
+public class Solution 
+{
+	public static int uniqueSubstrings(String input) 
+    {
+        int n=input.length(), len=0;
+        
+		HashMap<Character, Integer> map = new HashMap<>();
+
+		int l=0;
+		for(int r=0; r<n; r++){
+			if(map.containsKey(input.charAt(r))){         // If char exists
+			   l = Math.max(map.get(input.charAt(r))+1, l);
+			}
+			
+			map.put(input.charAt(r), r);         // Add char with index 
+
+            len = Math.max(r-l+1, len);         // Calculate length
+		}
+
+		return len;
+	}
+}

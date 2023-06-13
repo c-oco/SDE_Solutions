@@ -1,0 +1,31 @@
+// Author :- Nitish ,    Github:- c-oco
+
+/*                                      Generate all subarrays          */
+
+
+/*                                    Use of HashMap ( Endpoint Approach )           */
+
+import java.io.*;
+import java.util.* ;
+
+import java.util.ArrayList;
+
+public class Solution {
+	public static int subarraysXor(ArrayList<Integer> arr, int x) {
+		HashMap<Integer, Integer> map = new HashMap<>();
+		map.put(0, 1);       // Case : If there is a subarray with xor equal to x
+        
+		int xor = 0;              // Stores xor 
+		int count = 0;                      // Stores no of subarrays
+		for(int i=0; i<arr.size(); i++){
+			xor ^= arr.get(i);              // Calulating xor till ith element
+
+			if(map.containsKey(xor^x))      // If there exists some k=xor^x previously then we have subarray ending at ith index
+			   count += map.get(xor^x);      // Add to count, how many time such k has occured
+			
+			map.put(xor, map.getOrDefault(xor, 0)+1);     // Insert each xor
+		}
+
+        return count;
+	}
+}
