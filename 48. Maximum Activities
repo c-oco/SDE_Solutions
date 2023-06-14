@@ -1,0 +1,34 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.*;
+
+public class Solution {
+    public static int maximumActivities(List<Integer> start, List<Integer> end) {
+        int max = 0;
+
+        int n=start.size();
+        List<int[]> act = new ArrayList<>(n);
+
+        for(int i=0; i<n; i++)
+            act.add(new int[] {start.get(i), end.get(i)});  
+
+        Collections.sort(act, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] a, int[] b){       // sorting on end time
+                return a[1] - b[1];
+            }
+        });
+        
+        int last = 0;           // end time of last activity done
+
+        for(int[] activity:act){
+            if(activity[0] >= last){        // If start time of ith activity is >= last
+                last = activity[1];              // store end time of this activity
+                max++;                         // Increase the max;
+            }
+        }
+
+        return max;
+    }
+}
