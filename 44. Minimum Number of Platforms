@@ -1,0 +1,70 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+/*   (Submitted successfully on gfg but gives TLE on coding ninjas )    --    Use of Priority Queue                                    */
+
+import java.util.*;
+
+public class Solution {
+    public static int calculateMinPatforms(int at[], int dt[], int n) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();    // Gives train with least departure time
+        
+        int[][] ad = new int[n][2];
+        
+        for(int i=0; i<n; i++){
+            ad[i][0] = at[i];
+            ad[i][1] = dt[i];
+        }
+        
+        Arrays.sort(ad, (a, b) -> a[0]-b[0]);     // Sort on arrival time
+        
+        int maxP = 1;          // Minimum 1 platform is needed
+        
+        pq.add(ad[0][1]);                    // First train on platform 1
+        
+        for(int i=1; i<n; i++){
+            int lastT = pq.peek();          // Miminum departure Time among trains standing on platforms
+            
+            if(lastT<ad[i][0]){         // If any train on any platform has departure time les than arrival time of ith train 
+                pq.poll();              // Depart that train
+            }
+            
+            // Create a new platofrm if not free else divert it to the free platform
+            pq.add(ad[i][1]);           // Add new train every time
+            
+            maxP = Math.max(maxP, pq.size());     // Compare the size, i.e max train that are currently on station
+        }
+        
+        return maxP;
+    }
+}
+
+
+
+/*                               Compare arrival and departure time                */
+
+import java.util.*;
+
+public class Solution {
+    public static int calculateMinPatforms(int at[], int dt[], int n) {
+        Arrays.sort(at);
+        Arrays.sort(dt);            // Sort both arrays
+        
+        int maxP = 1, count=1;
+
+        int i=1, j=0;
+        while(i<n && j<n){
+            if(at[i]<=dt[j]){       // Till any train does not depart we need to keep adding new platforms
+              count++;
+              i++;
+            }else{                // Once a train departs we can reduce no of platforms needed at that time
+              count--;
+              j++;
+            }
+
+            maxP = Math.max(maxP, count);
+        }
+        
+        return maxP;
+    }
+}

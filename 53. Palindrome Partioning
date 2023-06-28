@@ -1,0 +1,49 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+/*                                 Generate all substring byt 2 for loops               */
+
+
+/*                                 Use of recursion                               */
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static List<List<String>> partition(String s) {
+        List<List<String>> partitions = new ArrayList<>();     // Stores partitions
+        List<String> sub = new ArrayList<>();                  // Stores the string
+
+        part(0, s, partitions, sub);          // Part them
+
+        return partitions;
+    }
+
+    public static void part(int i, String s, List<List<String>> partitions, List<String> sub){
+        if(i==s.length()){                              // When reach at the end of the string
+            partitions.add(new ArrayList<>(sub));
+            return ;
+        }
+
+        for(int j=i; j<s.length(); j++){
+            
+            if(check(s, i, j)){                        // If the part is palindrome
+                sub.add(s.substring(i, j+1));          // Add the part 
+                part(j+1, s, partitions, sub);         // part the remaining part
+                sub.remove(sub.size()-1);              // Remove current added part
+            }
+        }
+    } 
+
+    public static boolean check(String s, int i, int j){           // Check for palindrome
+
+        while(i<j){
+            if(s.charAt(i) != s.charAt(j))
+               return false;
+
+            i++; 
+            j--;
+        }
+
+        return true;
+    }
+}

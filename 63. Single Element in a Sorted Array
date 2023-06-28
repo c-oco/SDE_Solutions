@@ -1,0 +1,31 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+/*                                  HashMap or Linear Search could be used                               */
+
+
+/*                                         Use of binary search with minimum 2 size search space                       */
+
+import java.util.ArrayList;
+public class Solution
+{
+    public static int singleNonDuplicate(ArrayList<Integer> arr)
+    {
+        int lb=0, ub=arr.size()-1;
+
+        while(lb<ub){
+            int mid = lb + (ub-lb)/2;
+            
+                            /* If mid is even its duplicate will be in right,
+                               If mid is odd its duplicate will be in left,
+                               In both cases single element will be in right search space. */
+
+            if((mid%2==0 && arr.get(mid)==arr.get(mid+1)) || (mid%2==1 && arr.get(mid)==arr.get(mid-1))){
+                lb = mid+1;
+            }else
+                ub = mid;       // Always in left sub space
+        }
+
+        return arr.get(lb);
+    }
+}
