@@ -1,0 +1,49 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.*;
+
+public class Solution {
+    public static String kthPermutation(int n, int k) {
+        // 1 2 3 4
+        // 1 2 4 3
+        // 1 3 2 4
+        // 1 3 4 2    4
+        // 1 4 2 3
+        // 1 4 3 2
+        // 2 1 3 4    7
+        // 2 1 4 3
+        // 2 3 1 4
+        // 2 3 4 1    10
+        // 2 4 1 3
+        // 2 4 3 1
+
+        if(n==1) return "1";
+        
+        k--;
+        ArrayList<Integer> a = new ArrayList<>();
+        
+        int f = 1;
+        for(int i=1; i<=n; i++){
+            a.add(i);                  // Starting array
+            
+            if(i!=n)
+               f *= i;                // factorial
+        }
+
+        StringBuilder ans = new StringBuilder();
+        while(true){
+             int pos = k/f;               // position of number
+             ans.append(""+a.get(pos));
+             
+             a.remove(pos);
+             if(a.size()==0) break;
+
+             k %= f;             // the ith sequence in the next permuation size
+             f /= a.size();      // decrease factorial according to size
+        }
+
+        return ans.toString();
+    }
+}

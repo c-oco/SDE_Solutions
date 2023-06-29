@@ -1,0 +1,100 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+/*                                      works for duplicate elements             */
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static List<String> findPermutations(String s) {
+        List<String> ans = new ArrayList<>();
+
+        perm(0, s.toCharArray(), ans);    // Generate all sequences
+
+        return ans;
+    }
+
+    public static void perm(int ind, char[] s, List<String> ans){
+        if(ind==s.length){
+            ans.add(new String(s));
+            return ;
+        }
+
+        for(int i=ind; i<s.length; i++){
+            swap(s, i, ind);
+            perm(ind+1, s, ans);
+            swap(s, i, ind);
+        }
+    }
+
+    public static void swap(char[] s, int i, int j){
+        char t = s[i];
+        s[i] = s[j];
+        s[j] = t;
+    }
+}
+
+
+
+/*                                          (Backtracking)  Works for unique elements only               */
+
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        
+        back(new ArrayList<>(), ans, nums);                           // Generate all sequences
+        
+        return ans;
+    }
+    
+    public void back(List<Integer> p, List<List<Integer>> ans, int[] nums) {
+        if(p.size() == nums.length) {
+            ans.add(new ArrayList<>(p));
+            return;
+        }
+        
+        for(int num: nums) {
+            if (!p.contains(num)) {
+                p.add(num);
+                back(p, ans, nums);
+                p.remove(p.size()-1);
+            }
+        }
+    }
+}
+
+
+
+/*                                         (Backtracking) Works for duplicates also             */
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static List<String> findPermutations(String s) {
+        List<String> ans = new ArrayList<>();
+
+        perm(new StringBuilder(), new HashSet<>(), s.toCharArray(), ans);      // Generate all sequences
+
+        return ans;
+    }
+
+    public static void perm(StringBuilder p, HashSet<Integer> track, char[] s, List<String> ans){
+        if(p.length()==s.length){
+            ans.add(p.toString());
+            return ;
+        }
+
+        for(int i=0; i<s.length; i++){
+            if(!track.contains(i)){
+                track.add(i);
+
+                p.append(""+s[i]);
+                perm(p, track, s, ans);
+                p.deleteCharAt(p.length()-1);
+
+                track.remove(i);
+            }
+        }
+    }
+}
