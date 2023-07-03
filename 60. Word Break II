@@ -1,0 +1,35 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution {
+
+	public static ArrayList<String> wordBreak(String s, ArrayList<String> dictionary) {
+		ArrayList<String> ans = new ArrayList<>();
+		HashSet<String> dict = new HashSet<>(dictionary);  // Convert the dictionary to hashset 
+
+		breaking(0, s, new StringBuilder(), dict, ans);
+
+		return ans;
+	}
+
+	private static void breaking(int ind, String s, StringBuilder sb, HashSet<String> dict, ArrayList<String> ans){
+        if(ind == s.length()){
+			ans.add(sb.toString());
+			return ;
+		}
+
+        for(int i=ind; i<s.length(); i++){
+			String sub = s.substring(ind, i+1);  
+
+			if(dict.contains(sub)){             // Check if word exists in dictionary 
+				sb.append(sub+" "); 
+				breaking(i+1, s, sb, dict, ans);   // further break the string 
+				sb.delete(sb.length()-sub.length()-1, sb.length());
+			}
+		}
+	}
+}

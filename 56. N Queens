@@ -1,0 +1,47 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.ArrayList;
+
+public class Solution {
+    public static ArrayList<ArrayList<Integer>> solveNQueens(int n) {
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+
+        ArrayList<Integer> board = new ArrayList<>();
+
+        for(int i=0; i<n*n; i++)
+           board.add(0);             // Make place on board
+        
+        // Assigning positions to queens
+        place(0, n, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), board, ans);
+
+        return ans;
+    }
+
+    public static void place(int r, int n, ArrayList<Integer> col, ArrayList<Integer> ld, ArrayList<Integer> rd, ArrayList<Integer> board, ArrayList<ArrayList<Integer>> ans) {
+        if(r==n){
+            ans.add(new ArrayList<>(board));     // Add the board
+            return ;
+        }
+
+        for(int j=0; j<n; j++){
+
+            /* If any queen lies on same column, left diagonal and right diagonal see for other cell
+               or return to previous row of the board to correct the position of the r-1 th queen.   */
+
+            if(!col.contains(j) && !ld.contains(r-j) && !rd.contains(r+j)){
+                col.add(j);      // Add the col on which r th row queen sits 
+                ld.add(r-j);     // Add the left diagonal on which the queen can attack
+                rd.add(r+j);     // Add the right diagonal on which the queen can attack
+
+                board.set(r*n + j, 1);    // Set the position of queen
+                place(r+1, n, col, ld, rd, board, ans);      // Set the next queen position
+                board.set(r*n + j, 0);    // Remove posiotn
+
+                col.remove(col.size()-1);
+                ld.remove(ld.size()-1);
+                rd.remove(rd.size()-1);
+            }
+        }
+    }
+}

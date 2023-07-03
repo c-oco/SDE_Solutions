@@ -1,0 +1,48 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+public class Solution {
+
+	public static boolean isItSudoku(int matrix[][]) {
+        return solve(matrix);
+	}
+
+	public static boolean solve(int[][] b){
+        for(int i=0; i<9; i++){
+            for(int j=0; j<9; j++){
+                if(b[i][j]==0){              // Find empty cell
+                    
+                    for(int c=1; c<=9; c++){
+                        if(valid(b, i, j, c)){        // If we can place or not
+                            b[i][j] = c;
+                            
+                            if(solve(b)){            // solve further
+                                return true;
+                            }
+                            else
+                                b[i][j] = 0;
+                        }
+                    }
+                    
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    public static boolean valid(int[][] b, int x, int y, int c){
+        
+        for(int i=0; i<9; i++){
+            if(b[i][y]==c) return false;
+            
+            if(b[x][i]==c) return false;
+            
+            if(b[3*(x/3)+i/3][3*(y/3)+(i%3)]==c) return false;
+        }
+        
+        return true;
+    }
+}

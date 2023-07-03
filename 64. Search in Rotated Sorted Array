@@ -1,0 +1,33 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+public class Solution {
+    public static int search(int arr[], int key) {
+        int lb=0, ub=arr.length-1;
+
+        while(lb<=ub){
+            int mid = lb + (ub-lb)/2;
+            
+            if(arr[mid]==key)
+                return mid;
+            else if(arr[lb]<=arr[mid]){              // If left space is sorted
+                if(key>=arr[lb] && key<=arr[mid]){   // If key lies in this
+                    ub = mid-1;
+                }
+                else{ 
+                    lb = mid+1;
+                }
+            }
+            else{                                    // Go to right space
+                if(key<=arr[ub] && key>=arr[mid]){   // If key lies in this
+                    lb = mid+1;
+                }
+                else{
+                    ub = mid-1;
+                }
+            }
+        }
+
+        return -1;
+    }
+}

@@ -1,0 +1,36 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.* ;
+import java.io.*;
+
+public class Solution {
+    public static List<List<Integer>> getTreeTraversal(BinaryTreeNode<Integer> root) {
+        List<Integer> pre = new ArrayList<>();
+		List<Integer> post = new ArrayList<>();
+		List<Integer> in = new ArrayList<>();
+
+        order(root, pre, post, in);
+
+		List<List<Integer>> ans = new ArrayList<>();
+		ans.add(new ArrayList<>(in));
+		ans.add(new ArrayList<>(pre));
+		ans.add(new ArrayList<>(post));
+
+        return ans;
+    }
+
+    public static void order(BinaryTreeNode<Integer> root, List<Integer> pre, List<Integer> post, List<Integer> in){
+        if(root==null) return ;
+        
+		pre.add(root.data);        // Preorder
+
+        order(root.left, pre, post, in);
+
+		in.add(root.data);         // Inorder
+
+        order(root.right, pre, post, in);
+
+        post.add(root.data);       // Postorder
+    }
+}

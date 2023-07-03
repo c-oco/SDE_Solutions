@@ -1,0 +1,57 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+/*                                     Using Recursion                   */
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+    public static List < Integer > getInOrderTraversal(TreeNode root) {
+    	List<Integer> ans = new ArrayList<>();
+
+        inorder(root, ans);
+
+        return ans;
+    }
+
+    public static void inorder(TreeNode root, List<Integer> ans){
+        if(root==null) return ;
+
+        inorder(root.left, ans);     // Go to extreme left
+
+        ans.add(root.data);          // Add the root
+
+        inorder(root.right, ans);   
+    }
+}
+
+
+
+/*                                     Using Iteration                    */
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+    public static List < Integer > getInOrderTraversal(TreeNode root) {
+    	List<Integer> ans = new ArrayList<>();
+
+        Stack<TreeNode> st = new Stack<>();
+        TreeNode curr = root;
+
+		while(curr!=null || !st.isEmpty()){
+            while(curr!=null){
+                st.add(curr);
+                curr = curr.left;
+            }
+
+            ans.add(st.peek().data);
+
+            curr = st.pop().right;     // Now traverse right sub tree be present
+		}
+
+        return ans;
+    }
+}
+

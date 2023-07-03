@@ -1,0 +1,36 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+/*                                     Done on GFG as Coding Ninjas problem has some issue            */
+
+class solve {
+    public boolean graphColoring(boolean graph[][], int m, int n) {
+        
+        return color(0, new int[n], graph, m)?true:false;
+    }
+    
+    public boolean color(int node, int[] nodes, boolean[][] mat, int m){
+        if(node==mat.length) return true;
+
+		for(int col=1; col<=m; col++){                  // Take a color
+            
+			boolean flag = false;
+			for(int j=0; j<mat.length; j++){
+			    if(mat[node][j] && nodes[j]==col){          // Check if its neighbor has same color
+			 	   flag = true; break;
+			    }
+			}
+
+			if(flag) continue;                      // If same color found go forward
+
+			nodes[node] = col;
+			if(color(node+1, nodes, mat, m)){       // Choose color for next node
+			   return true;
+			}
+			
+			nodes[node] = 0;
+		}
+
+		return false;
+	}
+}

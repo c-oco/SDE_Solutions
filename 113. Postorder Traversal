@@ -1,0 +1,63 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+/*                                     Using Recursion                   */
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+    public static List < Integer > getPostOrderTraversal(TreeNode root) {
+    	List<Integer> ans = new ArrayList<>();
+
+        postorder(root, ans);
+
+        return ans;
+    }
+
+    public static void postorder(TreeNode root, List<Integer> ans){
+        if(root==null) return ;
+
+        postorder(root.left, ans);     // Go to left
+
+        postorder(root.right, ans);    // Go to right
+
+        ans.add(root.data);          // Add the root
+    }
+}
+
+
+
+/*                                     Using Iteration                    */
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+    public static List < Integer > getPostOrderTraversal(TreeNode root) {
+    	List<Integer> ans = new ArrayList<>();
+
+        Stack<TreeNode> st = new Stack<>();
+        
+        if(root!=null)
+           st.add(root);
+        
+        while(!st.isEmpty()){
+            TreeNode node = st.pop();
+
+            ans.add(node.data);
+
+            if(node.left!=null)            // left sub tree later
+               st.add(node.left);
+            
+            if(node.right!=null)            // we handle right sub tree first
+               st.add(node.right); 
+        }
+
+        Collections.reverse(ans);                // Reverse
+
+        return ans;
+    }
+}
+
+

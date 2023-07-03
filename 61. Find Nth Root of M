@@ -1,0 +1,23 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+public class Solution {
+    public static int NthRoot(int n, int m) {
+        int lb=1, ub=(int)Math.sqrt(m);
+
+        // We use higher value as sqrt of m
+
+        while(lb<=ub){
+            int mid = lb +(ub-lb)/2;
+
+            if((int)Math.pow(mid, n)==m)
+                return mid;
+            else if((int)Math.pow(mid, n)>m)
+                ub = mid-1;
+            else
+                lb = mid+1;
+        }
+
+        return -1;
+    }
+}
