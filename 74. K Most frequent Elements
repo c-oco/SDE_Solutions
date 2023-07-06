@@ -1,0 +1,119 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+/*                                            Using Priority Queue                  */
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+
+	public static int[] KMostFrequent(int n, int k, int[] arr) {
+		HashMap<Integer, Integer> map = new HashMap<>();   // To find out frequency
+
+		// Sort on the basis of frequency
+		PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> b[0]-a[0]);
+        
+		// Add to the map
+		for(int elem:arr)
+		   map.put(elem, map.getOrDefault(elem, 0)+1);
+        
+		// Add the frequency and element to queue
+        for(Map.Entry m:map.entrySet()){
+			pq.add(new int[]{(int)m.getValue(), (int)m.getKey()});
+		}
+
+		int[] ans = new int[k];
+
+		int i=0;
+		while(i<k){
+			int[] pair = pq.poll();
+
+			ans[i++] = pair[1];      // Add
+		}
+
+		return ans;
+	}
+}
+
+
+
+/*                                             Using Buckets Technique                          */
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+
+	public static int[] KMostFrequent(int n, int k, int[] arr) {
+		HashMap<Integer, Integer> freq = new HashMap<>();
+        
+        for(int elem:arr)
+            freq.put(elem, freq.getOrDefault(elem, 0)+1);
+        
+        List<Integer>[] buckets = new List[arr.length+1];
+        
+        for(Map.Entry m:freq.entrySet()){            // Map each of the elem in the buckets according to their frequency
+            int value = (int)(m.getValue());
+            
+            if(buckets[value]==null){
+                buckets[value] = new LinkedList<>();
+            }
+            
+            buckets[value].add((int)m.getKey());
+        }
+        
+        int[] ans = new int[k];
+        
+        int j=0;
+        for(int i=buckets.length-1; i>0 && j<k; i--){      // Start from the greatest frequency that can occur 
+            if(buckets[i] == null) continue;
+            
+            for(int elem:buckets[i]){
+                ans[j++] = elem;
+            }
+        }
+        
+        return ans;
+	}
+}
+
+
+
+/*                                             Using sorting                       */
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	public static int[] KMostFrequent(int n, int k, int[] arr) {
+		HashMap<Integer, Integer> freq = new HashMap<>();
+        
+        for(int elem:arr)
+            freq.put(elem, freq.getOrDefault(elem, 0)+1);
+        
+        // Convert it in an freq, key array 
+        int[][] nums = new int[freq.size()][2];
+        
+        int i=0;
+        for(Map.Entry m:freq.entrySet()){
+            nums[i][0] = (int) m.getValue();
+            nums[i++][1] = (int) m.getKey();
+        }
+        
+        // Sort it on the basis of frequency 
+        Arrays.sort(nums, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] a, int[] b){
+                return b[0]-a[0];
+            }
+        });
+
+        int[] ans = new int[k];
+
+        i=0;
+        while(i<k){
+            ans[i] = nums[i++][1];
+        }
+        
+        return ans;
+	}
+}

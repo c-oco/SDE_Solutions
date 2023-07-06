@@ -1,0 +1,100 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+/*                                       We can use sort the array after pushing all elements in it         */
+
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution 
+{
+	public static ArrayList<Integer> mergeKSortedArrays(ArrayList<ArrayList<Integer>> kArrays, int k)
+	{
+		ArrayList<Integer> ans = new ArrayList<>();
+
+		for(int i=0; i<kArrays.size(); i++){
+			for(int elem:kArrays.get(i)){
+				ans.add(elem);
+			}
+		}
+        
+		Collections.sort(ans);
+
+		return ans;
+	}
+}
+
+
+
+/*                                       Using PriorityQueue                                   */
+
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution 
+{
+	public static ArrayList<Integer> mergeKSortedArrays(ArrayList<ArrayList<Integer>> kArrays, int k)
+	{
+		ArrayList<Integer> ans = new ArrayList<>();
+		PriorityQueue<Integer> pq = new PriorityQueue<>();
+
+		for(int i=0; i<kArrays.size(); i++){
+			for(int elem:kArrays.get(i)){
+				pq.add(elem);
+			}
+		}
+        
+		while(!pq.isEmpty()){
+			ans.add(pq.poll());
+		}
+
+		return ans;
+	}
+}
+
+
+
+/*                                        Using merge function                              */ 
+
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution 
+{
+    public static ArrayList<Integer> merge(ArrayList<Integer> a, ArrayList<Integer> b){
+		ArrayList<Integer> merged = new ArrayList<>();
+        
+		int i=0, j=0;
+		while(i<a.size() && j<b.size()){
+			if(a.get(i)<=b.get(j))
+			   merged.add(a.get(i++));
+			else
+			   merged.add(b.get(j++));
+		}
+
+		while(i<a.size()){
+			merged.add(a.get(i++));
+		}
+
+		while(j<b.size()){
+			merged.add(b.get(j++));
+		}
+
+		return merged;
+	}
+
+	public static ArrayList<Integer> mergeKSortedArrays(ArrayList<ArrayList<Integer>> kArrays, int k)
+	{
+		ArrayList<Integer> ans = new ArrayList<>();
+
+		for(int i=0; i<kArrays.size(); i++){
+			ans = merge(ans, kArrays.get(i));
+		}
+
+		return ans;
+	}
+}
+

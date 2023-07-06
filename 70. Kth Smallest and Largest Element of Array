@@ -1,0 +1,55 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+/*                                  Using Sorting                           */
+
+import java.util.*;
+
+
+public class Solution {
+	public static ArrayList<Integer> kthSmallLarge(ArrayList<Integer> arr, int n, int k) {
+		
+		Collections.sort(arr);      // Sort the array
+        
+		ArrayList<Integer> ans = new ArrayList<>();
+
+		ans.add(arr.get(k-1));                // K th Smallest
+		ans.add(arr.get(arr.size()-k));       // K th Largest
+        
+		return ans;
+	}
+}
+
+
+
+/*                                  Using Priority Queue                          */
+
+
+import java.util.*;
+
+
+public class Solution {
+	public static ArrayList<Integer> kthSmallLarge(ArrayList<Integer> arr, int n, int k) {
+		
+		// Store the elements in ascending and descending order
+		PriorityQueue<Integer> asOrder = new PriorityQueue<>();
+		PriorityQueue<Integer> desOrder = new PriorityQueue<>(Collections.reverseOrder());
+        
+		ArrayList<Integer> ans = new ArrayList<>();
+
+		for(int elem:arr){
+			asOrder.add(elem);
+			desOrder.add(elem);
+		}
+
+		while(k-->1){                  // Remove the k-1 Elements 
+            asOrder.poll();
+			desOrder.poll();
+		}
+
+		ans.add(asOrder.poll());        // Smallest Kth Element
+		ans.add(desOrder.poll());       // Largest Kth Element
+        
+		return ans;
+	}
+}

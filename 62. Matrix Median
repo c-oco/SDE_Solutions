@@ -1,0 +1,51 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.ArrayList;
+
+public class Solution
+{
+	public static int getMedian(ArrayList<ArrayList<Integer>> matrix)
+	{
+		int lb=1, ub=(int)1e9;
+
+		int n=matrix.size(), m=matrix.get(0).size();
+
+		while(lb<=ub){
+			int mid = lb +(ub-lb)/2;
+
+			int c = count(matrix, mid);   // Get the numbers smaller and equal to mid
+
+			if(c<=n*m/2)         // If count is less, then its no the median
+			   lb = mid+1;
+			else                 // If count is more, then also its not median
+			   ub = mid-1;
+		}
+
+		return lb;
+	}
+
+	private static int count(ArrayList<ArrayList<Integer>> matrix, int m){
+		int c=0;
+
+		for(ArrayList<Integer> mat:matrix){
+			int lb=0, ub=mat.size()-1;
+            
+			while(lb<=ub){
+				int mid = lb +(ub-lb)/2;
+                
+				if(mat.get(mid)<=m){
+					lb = mid+1;
+				}
+				else{
+                    ub = mid-1;
+				}
+			}
+
+			c += lb;  // Get the no of elements that are less than and equal to m
+		}
+
+		return c;
+	}
+}

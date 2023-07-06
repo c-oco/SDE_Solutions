@@ -1,0 +1,121 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.*;
+import java.io.*;
+
+class TrieNode{
+    private TrieNode childs[];
+    private boolean end;
+    private int count;
+
+    TrieNode(){
+        childs = new TrieNode[26];
+        end = false;
+        count = 0; 
+    }
+
+    public boolean containsKey(char ch){
+        return childs[ch-'a'] != null;
+    }
+
+    public TrieNode get(char ch){
+        return childs[ch-'a'];
+    }
+
+    public void put(char ch, TrieNode node){
+        childs[ch-'a'] = node;
+    }
+
+    public boolean isEnd(){     // Used for end
+        return end;
+    }
+
+    public void setEnd(){
+        end = true;
+    }
+
+    public void unsetEnd() {
+        end = false;
+    }
+    
+    public void inCount(){      // User for count
+        count++;
+    }
+
+    public void deCount(){
+        count--;
+    }
+
+    public int getCount(){
+        return count;
+    }
+}
+
+public class Trie {
+    TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    public void insert(String word) {
+        TrieNode node = root;
+
+        for(char ch:word.toCharArray()){
+            if(!node.containsKey(ch)){
+                node.put(ch, new TrieNode());
+            }
+            
+            node = node.get(ch);
+            node.inCount();
+        }
+        node.setEnd();
+    }
+
+    public int countWordsEqualTo(String word){
+        TrieNode node = searchPrefix(word);
+        if(node==null || !node.isEnd()) return 0;
+
+        return node.getCount();
+    }
+
+    public int countWordsStartingWith(String word){
+        TrieNode node = searchPrefix(word);
+        if(node==null) return 0;
+
+        return node.getCount();
+    }
+
+    public void erase(String word){
+        TrieNode node = searchPrefix(word);
+        if(node==null) return ;
+
+        node = root;
+
+        for(char ch:word.toCharArray()){
+            node = node.get(ch);
+            node.deCount();
+        }
+
+        if(node.getCount()==0){
+            node.unsetEnd();
+        }
+    }
+
+    public TrieNode searchPrefix(String word){
+        TrieNode node = root;
+        
+        for(char ch:word.toCharArray()){
+            if(node.containsKey(ch)){
+                node = node.get(ch);
+            }
+            else{
+                return null;
+            }
+        }
+        
+        return node;
+    }
+}

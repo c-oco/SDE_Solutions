@@ -1,0 +1,81 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+class TrieNode{
+    private TrieNode[] childs;       // Represents the alphabets of the node
+    private boolean end;           // Marks the end of a word
+
+    public TrieNode(){
+        childs = new TrieNode[26];
+        end = false;
+    }
+
+    public boolean containsKey(char ch){   // Check if the node has char ch 
+        return childs[ch-'a'] != null;      
+    }
+
+    public TrieNode get(char ch){     // Get the node at char ch
+        return childs[ch-'a'];
+    }
+
+    public void put(char ch, TrieNode node){    // Set the node at ch
+        childs[ch-'a'] = node;
+    }
+
+    public void setEnd(){
+        end = true;
+    }
+
+    public boolean isEnd(){
+        return end;
+    }
+}
+
+public class Trie {
+    private static TrieNode root;
+
+    Trie() {
+        root = new TrieNode();
+    }
+
+    public static void insert(String word) {
+        TrieNode node = root;
+
+        for(char ch:word.toCharArray()){
+            if(!node.containsKey(ch)){
+                node.put(ch, new TrieNode());
+            }
+
+            node = node.get(ch);
+        }
+
+        node.setEnd();
+    }
+
+    public static boolean search(String word) {
+        TrieNode node = searchPrefix(word);
+
+        return node!=null && node.isEnd();
+    }
+
+    public static boolean startsWith(String prefix) {
+        TrieNode node = searchPrefix(prefix);
+
+        return node!=null;
+    }
+
+    public static TrieNode searchPrefix(String s){
+        TrieNode node = root;
+
+        for(char ch:s.toCharArray()){
+            if(node.containsKey(ch)){
+                node = node.get(ch);
+            }
+            else
+                return null;
+        }
+
+        return node;
+    }
+}

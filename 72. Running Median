@@ -1,0 +1,36 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.Collections;
+import java.util.PriorityQueue;
+
+public class Solution{
+
+	public static void findMedian(int arr[]){
+		PriorityQueue<Integer> max = new PriorityQueue<>(Collections.reverseOrder());
+        PriorityQueue<Integer> min = new PriorityQueue<>();
+        
+        boolean even = true;     // Represents length is even or odd
+        
+        // max will always have k or k+1 elements
+        // min will always have k elements
+        for(int elem:arr){
+            if(even){
+                min.add(elem);
+                max.add(min.poll());   // We will add elem, k+1 condition
+            }else{
+                max.add(elem);
+                min.add(max.poll());   // We will balance k+1 of max
+            }
+
+            even = !even;        // Change the length, representation
+
+            if(even){
+                System.out.print((max.peek()+min.peek())/2+" ");
+            }else{
+                System.out.print(max.peek()+" ");
+            }
+        }
+    }
+}
