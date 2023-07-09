@@ -1,0 +1,68 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+/*                                        Recursion                             */
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	static ArrayList<ArrayList<Integer>> ans;
+	public static ArrayList<ArrayList<Integer>> pwset(ArrayList<Integer> arr) {
+		ans = new ArrayList<>();
+
+		Collections.sort(arr);
+
+		gen(0, new ArrayList<>(), arr);
+
+		return ans;
+	}
+
+	private static void gen(int i, ArrayList<Integer> set, ArrayList<Integer> arr){
+		if(i==arr.size()){
+			ans.add(new ArrayList<>(set));
+		    return ;
+		}
+
+		gen(i+1, set, arr);            // Not Take
+
+		set.add(arr.get(i));
+		gen(i+1, set, arr);            // Take
+		set.remove(set.size()-1);
+	}
+}
+
+
+/*                                        Using Bit Manipulation                             */
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	static ArrayList<ArrayList<Integer>> ans;
+	public static ArrayList<ArrayList<Integer>> pwset(ArrayList<Integer> arr) {
+		ans = new ArrayList<>();
+
+		Collections.sort(arr);
+
+		int n = arr.size();
+        n = 1<<n;
+        
+		int i=0;
+		while(i++<n){
+			ArrayList<Integer> set = new ArrayList<>();
+
+			int j=0, copy=i;
+			while(j<arr.size()){
+				if((copy&1)==1)             // Add the element if the bit is 1
+				  set.add(arr.get(j));   
+
+				j++;
+				copy = copy>>1;
+			}
+
+			ans.add(new ArrayList<>(set));
+		}
+
+		return ans;
+	}
+}
+

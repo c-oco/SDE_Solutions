@@ -1,0 +1,91 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+/*                                       Use of HashSet and Trie                      */
+
+import java.util.* ;
+import java.io.*; 
+
+class TrieNode{
+  private TrieNode childs[];
+  private boolean end;
+
+  TrieNode(){
+    childs = new TrieNode[26];
+    end = false;
+  }
+
+  public boolean containsKey(char ch){
+    return childs[ch-'a'] != null;
+  }
+
+  public TrieNode get(char ch){
+    return childs[ch-'a'];
+  }
+
+  public void put(char ch, TrieNode node){
+    childs[ch-'a'] = node;
+  }
+}
+
+class Trie{
+  TrieNode root;
+
+  Trie(){
+    root = new TrieNode();
+  }
+
+  public void insert(String s){
+    TrieNode node = root;
+
+    for(char ch:s.toCharArray()){
+      if(!node.containsKey(ch)){
+        node.put(ch, new TrieNode());
+      }
+
+      node = node.get(ch);
+    }
+    node.setEnd();
+  }
+
+  public void count(int skip, String s, HashSet<String> set){
+    TrieNode node = root;
+    
+    StringBuilder sb = new StringBuilder();
+    
+    int i=0;
+    for( ; i<skip; i++)
+       node = node.get(s.charAt(i));
+    
+    for( ; i<s.length(); i++){
+        char ch = s.charAt(i);
+        
+        node = node.get(ch);
+        
+        sb.append(""+ch);
+        if(!set.contains(sb.toString()))
+           set.add(sb.toString());
+    }
+  }
+}
+
+public class Solution {
+    public static int distinctSubstring(String word) {
+        Trie trie = new Trie();
+        
+        trie.insert(word);
+        
+        HashSet<String> distinct = new HashSet<>();
+        
+        for(int i=0; i<word.length(); i++){
+            trie.count(i, word, distinct);
+        }
+
+        return distinct.size();
+    }
+}
+
+
+
+/*                                       Use of Trie only                                    */
+

@@ -1,0 +1,109 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+//                                         Two queues can be used also
+
+
+//                                             Reversing in pop method
+
+import java.util.* ;
+import java.io.*; 
+public class Stack {
+    Queue<Integer> q;
+    int topElem=-1;
+
+    public Stack() {
+        q = new LinkedList<>();
+    }
+
+
+
+    /*----------------- Public Functions of Stack -----------------*/
+
+
+    public int getSize() { 
+        return q.size();
+    }
+
+    public boolean isEmpty() {
+        return q.size()==0;
+    }
+
+    public void push(int element) {
+        topElem = element;
+        q.add(element);
+    }
+
+    public int pop() {
+        if(isEmpty()) return -1;
+
+        int size = q.size();
+        while(size>2){
+            int elem = q.poll();
+            q.add(elem);
+
+            size--;
+        }
+
+        if(size==2){
+            int elem = q.poll();
+            topElem = elem;
+            q.add(elem);
+        }else{
+            topElem = -1;
+        }
+
+        return q.poll();
+    }
+
+    public int top() {
+        return topElem;
+    }
+}
+
+
+
+//                                                Reversing in push method
+
+import java.util.* ;
+import java.io.*; 
+public class Stack {
+    Queue<Integer> q;
+
+    public Stack() {
+        q = new LinkedList<>();
+    }
+
+
+
+    /*----------------- Public Functions of Stack -----------------*/
+
+
+    public int getSize() { 
+        return q.size();
+    }
+
+    public boolean isEmpty() {
+        return q.size()==0;
+    }
+
+    public void push(int element) {
+        q.add(element);
+
+        int size = q.size()-1;
+        while(size-->0){
+            q.add(q.poll());
+        }
+    }
+
+    public int pop() {
+        if(isEmpty()) return -1;
+        return q.poll();
+    }
+
+    public int top() {
+        if(isEmpty()) return -1;
+        return q.peek();
+    }
+}

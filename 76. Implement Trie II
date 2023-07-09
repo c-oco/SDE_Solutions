@@ -8,6 +8,7 @@ import java.io.*;
 class TrieNode{
     private TrieNode childs[];
     private boolean end;
+    private int prefix;
     private int count;
 
     TrieNode(){
@@ -39,8 +40,20 @@ class TrieNode{
     public void unsetEnd() {
         end = false;
     }
+
+    public void inPrefix(){      // Use for prefix
+        prefix++;
+    }
+
+    public void dePrefix(){
+        prefix--;
+    }
+
+    public int prefixCount(){
+        return prefix;
+    }
     
-    public void inCount(){      // User for count
+    public void inCount(){      // Use for count
         count++;
     }
 
@@ -69,8 +82,9 @@ public class Trie {
             }
             
             node = node.get(ch);
-            node.inCount();
+            node.inPrefix();
         }
+        node.inCount();
         node.setEnd();
     }
 
@@ -85,7 +99,7 @@ public class Trie {
         TrieNode node = searchPrefix(word);
         if(node==null) return 0;
 
-        return node.getCount();
+        return node.prefixCount();
     }
 
     public void erase(String word){
@@ -96,12 +110,12 @@ public class Trie {
 
         for(char ch:word.toCharArray()){
             node = node.get(ch);
-            node.deCount();
+            node.dePrefix();
         }
 
-        if(node.getCount()==0){
-            node.unsetEnd();
-        }
+        node.deCount();
+        if(node.getCount()==0)
+           node.unsetEnd();
     }
 
     public TrieNode searchPrefix(String word){
@@ -119,3 +133,4 @@ public class Trie {
         return node;
     }
 }
+

@@ -1,0 +1,44 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.* ;
+import java.io.*; 
+
+public class Stack {
+    int[] st;
+    int size;
+    int top;
+
+    Stack(int n){
+        st = new int[n];
+        size = n;
+        top = -1;
+    }
+
+    void push(int num) {
+        if(isFull()==1)
+           return ;
+        st[++top] = num;
+    }
+    int pop() {
+        if(isEmpty()!=0)
+           return -1;
+        return st[top--];
+    }
+    int top() {
+        if(isEmpty()!=0)
+           return -1;
+        return st[top];
+    }
+    int isEmpty() {
+        if(top==-1)
+           return 1;
+        return 0;
+    }
+    int isFull() {
+        if(top==size)
+           return 1;
+        return 0;
+    }
+}
