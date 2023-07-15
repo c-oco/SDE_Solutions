@@ -1,0 +1,71 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                                         DFS
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+    
+    public static boolean identicalTrees(BinaryTreeNode<Integer> root1, BinaryTreeNode<Integer> root2) {
+        
+        return check(root1, root2);     
+    }
+
+    private static boolean check(BinaryTreeNode<Integer> root1, BinaryTreeNode<Integer> root2){
+        if(root1==null && root2==null) return true;
+        if(root1==null || root2==null) return false;
+
+        if(!root1.data.equals(root2.data)) return false;
+
+        if(!check(root1.left, root2.left)) return false;
+
+        if(!check(root1.right, root2.right)) return false;
+        
+        return true;
+    }
+}
+
+
+
+
+//                                                         BFS
+
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+    
+    public static boolean identicalTrees(BinaryTreeNode<Integer> root1, BinaryTreeNode<Integer> root2) {
+        if(root1==null && root2==null) return true;
+        if(root1==null || root2==null) return false;
+
+        Queue<BinaryTreeNode<Integer>> q = new LinkedList<>();
+        q.add(root1);
+        q.add(root2);
+        
+        while(!q.isEmpty()){
+            BinaryTreeNode n1 = q.poll(), n2 = q.poll();                 // Traverse each node 
+
+            if(!n1.data.equals(n2.data)) return false;
+
+            if(n1.left!=null && n2.left!=null){
+                q.add(n1.left);
+                q.add(n2.left);
+            }
+            else if((n1.left==null && n2.left!=null) || (n1.left!=null && n2.left==null))
+                return false;
+            
+            if(n1.right!=null && n2.right!=null){
+                q.add(n1.right);
+                q.add(n2.right);
+            }
+            else if((n1.right==null && n2.right!=null) || (n1.right!=null && n2.right==null))
+                return false;
+        }
+        
+        return true;     
+    }
+}

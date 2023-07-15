@@ -1,0 +1,102 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.*;
+
+public class LRUCache
+{
+    private class DNode{
+        int key, val;
+        DNode prev;
+        DNode next;
+
+        DNode(){
+            this.key = -1;  this.val = -1;
+            this.prev = null; this.next = null;
+        }
+
+        DNode(int key, int val){
+            this.key = key;
+            this.val = val;
+        }
+    }
+
+    private void add(DNode node){      // Add the new key-value in front 
+        node.prev = head;
+        node.next = head.next;
+
+        head.next.prev = node;
+        head.next = node;
+    }
+
+    private void remove(DNode node){     // Remove the node
+        DNode pre = node.prev;
+        DNode nex = node.next;
+
+        pre.next = nex;
+        nex.prev = pre;
+    }
+
+    private void update(DNode node){     // Remove, then add in front
+        this.remove(node);
+        this.add(node);
+    }
+
+    private DNode removeTail(){          // Remove the old cache value
+        DNode node = tail.prev;
+
+        this.remove(node);
+
+        return node;
+    }
+
+    private HashMap<Integer, DNode> present;       // Tells the presence
+    private DNode head, tail;
+    private int limit;
+    
+    LRUCache(int capacity)
+    {
+        this.present = new HashMap<>();
+        this.limit = capacity;
+
+        head = new DNode();
+        tail = new DNode();
+
+        head.next = tail;
+        tail.prev = head;            // Join head and tail
+    }
+
+    public int get(int key)
+    {
+        DNode node = present.get(key);
+        
+        if(node==null) return -1;
+
+        this.update(node);             // If found then update it
+
+        return node.val;
+    }
+
+    public void put(int key, int value)
+    {
+        if(present.containsKey(key)){
+            DNode node = present.get(key);
+            
+            node.val = value;
+            this.update(node);
+        }
+        else{
+            DNode node = new DNode(key, value);
+
+            this.add(node);
+            this.present.put(key, node);
+
+            if(present.size()>limit){
+                node = this.removeTail();
+
+                this.present.remove(node.key);
+            }
+        }
+    }
+}
+ 

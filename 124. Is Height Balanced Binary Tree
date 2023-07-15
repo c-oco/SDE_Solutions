@@ -1,0 +1,33 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+//                                                  DFS
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+
+	public static boolean isBalancedBT(BinaryTreeNode<Integer> root) {
+		boolean[] balanced = {true};
+
+        dfs(root, balanced);
+
+        return balanced[0];
+	}
+
+    private static int dfs(BinaryTreeNode<Integer> root, boolean[] balanced){ 
+        if(!balanced[0]) return 0;
+        if(root==null) return 0;
+
+        int left = dfs(root.left, balanced);
+
+        int right = dfs(root.right, balanced);
+
+        if(Math.abs(left - right)>1)
+            balanced[0] = false;
+
+        return 1 + Math.max(left, right);
+    }
+}

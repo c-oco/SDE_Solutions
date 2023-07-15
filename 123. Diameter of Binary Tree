@@ -1,0 +1,27 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+//                                                   DFS
+
+public class Solution {
+	public static int diameterOfBinaryTree(TreeNode<Integer> root) {
+		int[] maxHeight = {0};
+		
+		dfs(root, maxHeight);
+
+		return maxHeight[0]-1;
+	}
+
+	private static int dfs(TreeNode<Integer> root, int[] maxHeight) {
+		if(root==null) return 0;
+
+		int left = dfs(root.left, maxHeight);
+
+		int right = dfs(root.right, maxHeight);
+
+		maxHeight[0] = Math.max(maxHeight[0], left+right+1);
+
+		return 1 + Math.max(left, right);
+	}
+}

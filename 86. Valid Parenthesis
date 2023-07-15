@@ -1,0 +1,51 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                         Without Stack 
+
+class Solution {
+    public boolean isValid(String s) {
+        int p = -1;
+        
+        char st[] = new char[s.length()];
+        
+        for(char ch:s.toCharArray()){
+            if(ch=='(' || ch=='[' || ch=='{')
+                st[++p] = ch;
+            else{
+                if(p>=0 && ( (st[p]=='(' && ch==')') || (st[p]=='{' && ch=='}') || (st[p]=='[' && ch==']') ) )
+                    p--;
+                else
+                    return false;
+            }
+        }
+        
+        return p==-1;
+    }
+}
+
+
+
+//                                         With Stack
+
+class Solution {
+    public boolean isValid(String s) {
+        Stack<Character> st = new Stack<>();
+        
+        for(char ch:s.toCharArray()){
+            if(ch=='(' || ch=='[' || ch=='{')
+                st.add(ch);
+            else{
+                if(st.isEmpty()) return false;
+                
+                char top = st.peek();
+                if( (top=='(' && ch==')') || (top=='{' && ch=='}') || (top=='[' && ch==']') )
+                    st.pop();
+                else
+                    return false;
+            }
+        }
+        
+        return st.isEmpty();
+    }
+}

@@ -1,0 +1,44 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static long ayushGivesNinjatest(int n, int m, int[] time) {
+        if(m==1) return (long)time[0];
+
+        long minDayTime = 0;
+
+        long lb = 0, totalTime=0;
+        for(int t:time){
+            lb = Math.max(lb, (long)t);        // Min time for any chapter
+            totalTime += (long)t;              // Max time of day to do all chapter
+        }
+
+        long ub = totalTime;
+        while(lb<=ub){
+            long maxDayTime = lb + (ub-lb)/2;
+
+            long days = 1, currDayTime = 0;
+
+            for(int t:time){
+                if(currDayTime+t>maxDayTime){    // If the chapter can be done on same day
+                    days++;
+                    currDayTime = 0;
+                }
+
+                currDayTime += t;
+            }
+
+            if(days>n)                        // If we with current day time, we exceeded given days
+               lb = maxDayTime+1;
+            else{
+                minDayTime = maxDayTime;
+                ub = maxDayTime-1;
+            }
+        }
+
+        return minDayTime;
+    }
+}

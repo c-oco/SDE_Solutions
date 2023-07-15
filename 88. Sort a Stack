@@ -1,0 +1,61 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                         Priority Queue can also be used
+
+
+//                                         Using Stack and Recursion
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+
+	public static void sortStack(Stack<Integer> stack) {
+		if(stack.isEmpty()) return ;
+
+		int curr = stack.pop();             // Pull out each element
+
+		sortStack(stack);
+
+		Stack<Integer> temp = new Stack<>();       
+       
+		while(!stack.isEmpty() && stack.peek()>curr)          // Store all elements less than curr in temp
+            temp.push(stack.pop());
+
+		stack.push(curr);                                    // Now push curr
+
+		while(!temp.isEmpty()) stack.push(temp.pop());       // Push greater eleements
+	}
+}
+
+
+
+//                                           Using Recursion Only
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+
+	public static void sortStack(Stack<Integer> stack) {
+		if(stack.isEmpty()) return ;
+
+		int curr = stack.pop();                // Pull out each element
+
+		sortStack(stack);
+
+		sort(stack, curr);                     // Now start to insert
+	}
+
+	private static void sort(Stack<Integer> stack, int num){
+		if(stack.isEmpty() || num>stack.peek()){            // If element to be inserted is greater than the top elementof stack
+		   stack.push(num);
+		   return ;
+		}
+
+		int curr = stack.pop();             // Pop the element
+
+		sort(stack, num);                  // Insert smallest element first 
+
+		stack.push(curr);
+	}
+}

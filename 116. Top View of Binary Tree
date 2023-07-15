@@ -1,0 +1,52 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+//                                                    BFS
+
+import java.util.* ;
+import java.io.*; 
+
+class Pair{
+	BinaryTreeNode node;
+	int vert;
+
+	Pair(BinaryTreeNode node, int vert){
+		this.node = node;
+		this.vert = vert;
+	}
+}
+
+public class Solution {
+	public static ArrayList<Integer> getTopView(BinaryTreeNode root) {
+		ArrayList<Integer> ans = new ArrayList<>();
+
+		if(root==null) return ans;
+
+		TreeMap<Integer, Integer> map = new TreeMap<>();
+
+		Queue<Pair> q = new LinkedList<>();
+		q.offer(new Pair(root, 0));
+
+		while(!q.isEmpty()){
+			Pair pair = q.poll();
+
+			int vert = pair.vert;
+			BinaryTreeNode node = pair.node;
+            
+			// Add the vert only first time when it appears
+			if(!map.containsKey(vert)) map.put(vert, node.val);
+
+			if(node.left!=null)
+			   q.offer(new Pair(node.left, vert-1));
+
+			if(node.right!=null)
+			   q.offer(new Pair(node.right, vert+1));
+		}
+
+		for(int vert:map.keySet())
+		   ans.add(map.get(vert));
+
+		return ans;
+	}
+}

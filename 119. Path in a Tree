@@ -1,0 +1,49 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.* ;
+import java.io.*; 
+/*   
+    Following is the Binary Tree node structure for referance:
+
+    class TreeNode
+    {
+        int data;
+        TreeNode left, right;
+    
+        public TreeNode(int item)
+        {
+            data = item;
+            left = right = null;
+        }
+    }
+*/
+
+public class Solution {
+    public static ArrayList<Integer> pathInATree(TreeNode root, int x) {
+        ArrayList<Integer> path = new ArrayList<>();
+
+        dfs(root, x, path);
+
+        return path;
+    }
+
+    public static boolean dfs(TreeNode root, int x, ArrayList<Integer> path){
+        if(root==null) return false;
+
+        if(root.data==x){
+            path.add(root.data);
+            return true;
+        }
+
+        path.add(root.data);
+
+        if(dfs(root.left, x, path)) return true;
+
+        if(dfs(root.right, x, path)) return true;
+
+        path.remove(path.size()-1);
+
+        return false;
+    }
+}

@@ -1,0 +1,59 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+//                                                    BFS
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+	public static int getMaxWidth(TreeNode root) {
+	    if(root==null) return 0;
+    
+	    Queue<TreeNode> q = new LinkedList<>();
+	    q.add(root);
+
+		int maxWidth = 1;
+    
+	    while(!q.isEmpty()){
+	    	int size = q.size();
+
+			maxWidth = Math.max(maxWidth, size);    // Test the max Width
+
+	    	while(size-->0){
+	    		TreeNode node = q.poll();
+    
+	    		if(node.left!=null)
+	    		   q.add(node.left);
+    
+	    		if(node.right!=null)
+	    		   q.add(node.right);
+	    	}
+	    }
+    
+	    return maxWidth;
+	}
+}
+
+
+
+//                                    LeetCode :- DFS
+
+class Solution {
+    public int widthOfBinaryTree(TreeNode root) {
+
+        return dfs(root, 1, 0, new ArrayList<>());
+    }
+    
+    private int dfs(TreeNode root, int index, int level, List<Integer> left){
+        if(root==null){
+            return 0;
+        }
+        
+        if(level==left.size()) left.add(index);        // Adding the left the most nodes index
+                                
+        // Every time when we get same level after just fetch the smallest index of it and find the size
+        return Math.max(index + 1 - left.get(level), Math.max(dfs(root.left, 2*index, level+1, left), dfs(root.right, 2*index+1, level+1, left)));
+    }
+}

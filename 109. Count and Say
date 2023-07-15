@@ -1,0 +1,43 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution 
+{
+    public static String writeAsYouSpeak(int n) 
+    {
+        if(n==1) return "1";
+
+        String original = "1";
+
+        for(int i=1; i<n; i++){
+            String s = speak(original);      // Speak out the string
+
+            original = s;
+        }
+
+        return original;
+    }
+
+    private static String speak(String s){
+        StringBuilder newOne = new StringBuilder();     // Create new String
+        
+        int n=s.length();
+        int i=1, c=1;
+        while(i<n){
+            if(s.charAt(i-1)==s.charAt(i)) c++;
+            else{
+                newOne.append(""+ (char)(48+c) + s.charAt(i-1));    // Append the frequency and character
+                c = 1;
+            }
+
+            i++;
+        }
+
+        newOne.append(""+ (char)(48+c) + s.charAt(i-1));    // Append the last character
+
+        return newOne.toString();
+    }
+}

@@ -1,0 +1,23 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int atoi(String str) {
+        int n=0;
+
+        boolean neg = str.charAt(0)=='-'?true:false;
+
+        for(char ch:str.toCharArray())
+            if(ch>='0' && ch<='9'){
+                n = (n*10) + (ch-'0');
+            }
+
+        if(neg)
+          n *= -1;
+
+        return n;
+    }
+}

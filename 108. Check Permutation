@@ -1,0 +1,54 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                      Use of HashMap
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static boolean areAnagram(String str1, String str2){
+        HashMap<Character, Integer> map = new HashMap<>();
+
+        for(char ch:str1.toCharArray())
+           map.put(ch, map.getOrDefault(ch, 0)+1);    // Map characters and their frequency
+
+        for(char ch:str2.toCharArray()){
+            if(map.containsKey(ch)){
+                int freq = map.get(ch);
+
+                if(freq-1==0) map.remove(ch);        // If freq becomes 0 then remove the character
+                else map.put(ch, freq-1);
+            }
+            else
+               return false;
+        }
+
+        return map.size()==0;
+    }
+}
+
+
+
+//                                      Use of Freq ArrayList
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static boolean areAnagram(String str1, String str2){
+        int[] freq = new int[26];
+        
+        for(char ch:str1.toCharArray())
+            freq[ch-'a']++;
+        
+        for(char ch:str2.toCharArray()){
+            freq[ch-'a']--;
+            
+            if(freq[ch-'a']<0) return false;       // If freq becomes less than 0
+        }
+        
+        for(int f:freq)
+            if(f>0) return false;                // If there is any character left in array
+        
+        return true;
+    }
+}
