@@ -1,0 +1,55 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class Solution {
+
+	public static int minTimeToRot(int[][] grid, int n, int m) {
+		Queue<int[]> q = new LinkedList<>();
+
+		int[] row = {-1, 0, 1, 0};
+		int[] col = {0, 1, 0, -1};
+        
+		int fresh=0;
+		for(int i=0; i<n; i++){
+			for(int j=0; j<m; j++){
+				if(grid[i][j]==2)
+				   q.add(new int[]{i, j});     // Add all rotten oranges
+				if(grid[i][j]==1)
+				   fresh++;                  // Count the fresh oranges
+			}
+		}
+        
+		int time=0;
+		while(!q.isEmpty()){
+			int size = q.size();
+            
+			boolean rotten = false;
+			for(int i=0; i<size; i++){
+				int[] p = q.poll();
+
+				for(int j=0; j<4; j++){
+					int r = p[0] + row[j];
+					int c = p[1] + col[j];
+
+					if(r>=0 && r<n && c>=0 && c<m && grid[r][c]!=2 && grid[r][c]!=0){
+						grid[r][c] = 2;
+						q.add(new int[]{r, c});
+						fresh--;        
+						rotten = true;    
+					}
+				}
+			}
+
+			if(rotten)        // Checks if any ornage become rotten or not 
+			   time++;
+		}
+
+		if(fresh!=0) return -1;     // Check if all fresh ornages become rotten or not
+
+		return time;
+	}
+
+}

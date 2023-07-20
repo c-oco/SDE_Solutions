@@ -1,0 +1,31 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+	public static long findMaxSumPath(TreeNode root) {
+		long[] maxSum = {-1};   // Stores max sum
+
+		dfs(root, maxSum);
+
+		return maxSum[0];
+	}
+
+	private static long dfs(TreeNode root, long[] maxSum){
+		if(root==null) return -1;
+
+		// Return value of leaf node
+		if(root.left==null && root.right==null) return (long)root.data;   
+
+		long left = dfs(root.left, maxSum);
+		long right = dfs(root.right, maxSum);
+        
+		// Find max if only the sum came from leaf nodes
+		if(left!=-1 && right!=-1 && maxSum[0]<left+right+(long)root.data)
+		   maxSum[0] = left+right+(long)root.data;
+
+		return (long)root.data + Math.max(left, right);
+	}
+}

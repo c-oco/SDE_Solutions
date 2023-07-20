@@ -1,0 +1,107 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+//                                   Use of HashMap and Bit Manipulation
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+
+    public static int maximumXor(int[] A) {
+        int max=0, mask=0;
+
+        for(int i=31; i>=0; i--){
+            mask = mask | (1<<i);                  // mask for the left part of ith bit
+
+            Set<Integer> set = new HashSet<>();    
+
+            int newMaxTry = max | (1<<i);        // The new XOR that can occur
+
+            for(int elem:A){
+                int temp = mask & elem;          // Find the left part
+
+                /* Let say temp has 10100, and newtry is 11100, then we need to check if set has
+                   01000, If so then this is new max else we go check for other bits */
+                if(set.contains((newMaxTry ^ temp))){      // Find if any number in set can help make the new XOR
+                    max = newMaxTry;
+                    break;
+                }
+                
+                set.add(temp);       // Add in set
+            }
+        }
+
+        return max;
+    }
+}
+
+
+
+
+//                                         Use of Trie
+
+import java.util.* ;
+import java.io.*; 
+
+class TrieNode{
+    TrieNode childs[] = new TrieNode[2];
+}
+
+class Trie{
+    TrieNode root;
+
+    Trie(){
+        this.root = root = new TrieNode();
+    }
+
+    public void insert(int[] nums){
+        for (int num:nums) {
+            TrieNode node = this.root;
+            
+            for(int i=31; i>=0; i--){
+                int bit = (num >> i) & 1;
+                
+                if(node.childs[bit] == null)
+                    node.childs[bit] = new TrieNode();
+                
+                node = node.childs[bit];
+            }
+        }
+    }
+}
+
+public class Solution {
+
+    public static int maximumXor(int[] A) {
+        if(A.length==1) return 0;
+        else if(A.length==2) return A[0] ^ A[1];
+
+        Trie trie = new Trie();
+
+        trie.insert(A);         // Insert all 
+
+        int max = 0;
+        for(int elem:A){
+            int newMax = 0;       // New max that we can make on this bit
+
+            TrieNode node = trie.root;
+
+            for(int i=31; i>=0; i--){
+                int oppBit = 1 - ((elem >> i) & 1);     // To get max we need to get the opp bit of the current bit of the number 
+
+                if(node.childs[oppBit]!=null){
+                    node = node.childs[oppBit];
+
+                    newMax |= (1<<i);              // Add the bit to the newMax
+                }
+                else
+                   node = node.childs[1-oppBit];    // Other wise find for rest bits
+
+                max = Math.max(max, newMax);
+            }
+        }
+
+        return max;
+    }
+}

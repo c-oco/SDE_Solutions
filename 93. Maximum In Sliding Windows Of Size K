@@ -1,0 +1,68 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                       Use of Dequeue
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution 
+{
+
+	public static ArrayList<Integer> getMaximumOfSubarrays(ArrayList<Integer> nums, int k) 
+	{
+		int n=nums.size();
+
+		ArrayList<Integer> ans = new ArrayList<>();
+
+		Deque<Integer> dq = new LinkedList<>();
+
+	    for(int i=0; i<n; i++){
+			if(!dq.isEmpty() && dq.peek()<i-k+1){     // Remove the out of bound index
+				dq.poll();
+			}
+
+			while(!dq.isEmpty() && nums.get(dq.peekLast())<=nums.get(i)){    // values <= nums[i] 
+				dq.pollLast();
+			}
+
+			dq.offer(i);       // Add new element
+
+			if(i-k+1>=0){
+				ans.add(nums.get(dq.peek()));        // Add the max to result which will be head 
+			}
+		}
+
+		return ans;
+	}
+}
+
+
+
+//                                            Use of max of every window
+
+public class Solution {
+	public static int[] maxSlidingWindow(int[] arr, int n, int k) {
+        int[] ans = new int[n-k+1];
+
+		int[] left = new int[n];
+		int[] right = new int[n];
+		left[0] = arr[0];
+		right[n-1] = arr[n-1];     
+
+		for(int i=1; i<n; i++){
+			if(i%k==0) left[i] = arr[i];                   // On start of every window the ith element is max 
+			else left[i] = Math.max(left[i-1], arr[i]);   // Find the max in that window
+            
+			int j = n-i-1;
+			if(j%k==k-1) right[j] = arr[j];
+			else right[j] = Math.max(right[j+1], arr[j]);
+		}
+
+		for(int i=0, j=i+k-1; j<n; i++, j++){
+			ans[i] = Math.max(left[j], right[i]);      // Maximum would be the value of left and right
+		}
+
+		return ans;
+	}
+}

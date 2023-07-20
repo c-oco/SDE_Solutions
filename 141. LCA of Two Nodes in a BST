@@ -1,0 +1,28 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution 
+{
+
+	public static TreeNode<Integer> LCAinaBST(TreeNode<Integer> root, TreeNode<Integer> p, TreeNode<Integer> q) 
+    {		
+        return dfs(root, p, q);        
+    }
+
+    private static TreeNode<Integer> dfs(TreeNode<Integer> root, TreeNode<Integer> x, TreeNode<Integer> y){
+        if(root==null) return null;
+        if(root.data == x.data || root.data == y.data) return root;
+
+        TreeNode<Integer> left = dfs(root.left, x, y);
+        TreeNode<Integer> right = dfs(root.right, x, y);
+
+        if(left==null || right==null)           // If one node is root of another
+            return left==null?right:left;
+        else
+            return root;             // Common ancestor is a different node
+    }
+}

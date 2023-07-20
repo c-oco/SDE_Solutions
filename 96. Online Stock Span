@@ -1,0 +1,27 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+    public static ArrayList<Integer> findSpans(ArrayList<Integer> price) {
+        Stack<int[]> st = new Stack<>();
+        ArrayList<Integer> ans = new ArrayList<>();
+
+        for(int currDayPrice:price){
+            int days = 1;  // min for each day
+
+            // Till we get a price grater than curr day's price
+            while(!st.isEmpty() && st.peek()[0]<=currDayPrice){
+                days += st.pop()[1];    // Add the time
+            }
+             
+            st.push(new int[]{currDayPrice, days});
+            ans.add(days);
+        }
+
+        return ans;
+    }
+}

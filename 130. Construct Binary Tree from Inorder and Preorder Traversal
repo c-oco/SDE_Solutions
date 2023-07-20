@@ -1,0 +1,37 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                          DFS
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution 
+{
+    public static TreeNode<Integer> buildBinaryTree(ArrayList<Integer>  inorder, ArrayList<Integer>  preorder) 
+    {   
+        int n = inorder.size(); 
+
+        return construct(0, n-1, 0, n-1, inorder, preorder);
+    }
+
+    private static TreeNode<Integer> construct(int inS, int inE, int preS, int preE, ArrayList<Integer> in, ArrayList<Integer> pre){
+        if(inS>inE || preS>preE) return null;
+        
+        TreeNode<Integer> root = new TreeNode<Integer>(pre.get(preS));
+        
+        int ind = 0;
+        for(int i=0; i<=inE; i++)
+           if(in.get(i)==root.data){
+               ind = i;
+               break;
+           }
+        
+        int space = ind-inS;
+
+        root.left = construct(inS, ind-1, preS+1, preS+space, in, pre);
+        root.right = construct(ind+1, inE, preS+space+1, preE, in, pre);
+
+        return root;
+    }
+}

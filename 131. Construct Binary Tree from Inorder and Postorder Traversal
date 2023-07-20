@@ -1,0 +1,32 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                          DFS
+
+public class Solution {
+	public static TreeNode<Integer> getTreeFromPostorderAndInorder(int[] postOrder, int[] inOrder) {
+    int n = postOrder.length;
+
+		return construct(0, n-1, 0, n-1, postOrder, inOrder);
+	}
+
+  private static TreeNode<Integer> construct(int inS, int inE, int pS, int pE, int[] po, int[] in){
+    if(inS>inE || pS>pE) return null;
+
+    TreeNode<Integer> root = new TreeNode<Integer>(po[pE]);
+    
+    int ind=0;
+    for(int i=0; i<=inE; i++)
+       if(root.data == in[i]){
+         ind = i;
+         break;
+       }
+    
+    int space = ind-inS;      // Space to jump to go to another subtree
+    
+    root.left = construct(inS, ind-1, pS, pS+space-1, po, in);
+    root.right = construct(ind+1, inE, pS+space, pE-1, po, in);
+
+    return root;
+  }
+}

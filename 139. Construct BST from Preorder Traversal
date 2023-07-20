@@ -1,0 +1,30 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+ 
+	public static TreeNode<Integer> preOrderTree(int[] preOrder) {
+ 	    return construct(0, preOrder.length-1, preOrder);
+    }
+
+    private static TreeNode<Integer> construct(int i, int j,int[] p){
+        if(i>j) return null;
+        
+        TreeNode<Integer> root = new TreeNode<Integer>(p[i++]);
+        
+        int k=i;
+        while(k<=j){
+            if(p[k]>root.data) break;     // Find the right sub tree start point 
+            k++;
+        }
+
+        root.left = construct(i, k-1, p);
+        root.right = construct(k, j, p);
+
+        return root;
+    }
+}

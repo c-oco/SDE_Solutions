@@ -1,0 +1,83 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                          BFS ( with Queue )
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+	public static void connectNodes(BinaryTreeNode<Integer> root) {
+    	Queue<BinaryTreeNode<Integer>> q = new LinkedList<>();
+		q.add(root);
+
+		while(!q.isEmpty()){
+			int size = q.size();
+
+			for(int i=0; i<size; i++){
+				BinaryTreeNode<Integer> node = q.poll();
+                
+				if(i!=size-1)
+				  node.next = q.peek();         // Connect the nodes at each, except last
+
+				if(node.left!=null) q.add(node.left);
+				if(node.right!=null) q.add(node.right);
+			}
+		}
+	}
+}
+
+
+//                                   Perfect Tree
+
+//                                          DFS
+
+class Solution {
+    public Node connect(Node root) {
+        if(root==null) return null;
+        
+		Node L = root.left, R = root.right, N = root.next;
+
+		if(L!=null){                 // If left child is there
+			L.next = R;              // Connect the left and right childs
+
+			if(N!=null) R.next = N.left;     // If neighbour of parent is there
+
+            connect(root.left);
+			connect(root.right);
+		}
+
+		return root;
+    }
+}
+
+
+
+//                                           BFS ( O(1) )
+
+class Solution {
+    public Node connect(Node root) {
+        Node node = root;
+        
+        while(node!=null){
+            Node curr = node;
+            
+            while(curr!=null){
+
+                if(curr.left!=null){                    // same as dfs
+                    curr.left.next = curr.right;
+                    
+                    if(curr.next!=null) curr.right.next = curr.next.left;
+                }
+                else break;
+                
+                curr = curr.next;
+            }
+            
+            node = node.left;               
+        }
+        
+
+		return root;
+    }
+}

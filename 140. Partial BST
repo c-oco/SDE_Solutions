@@ -1,0 +1,53 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                   Using ArrayList
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+    public static boolean validateBST(BinaryTreeNode<Integer> root) {
+        return check(root, new ArrayList<>());
+    }
+
+    private static boolean check(BinaryTreeNode<Integer> root, ArrayList<Integer> arr){
+        if(root==null) return true;
+
+        if(!check(root.left, arr)) return false;
+        
+        // Check if last value is greater than the current node
+        if(arr.size()!=0 && arr.get(arr.size()-1)>root.data) return false;
+        
+        arr.add(root.data);
+
+        boolean right = check(root.right, arr);
+
+        return right;
+    }
+}
+
+
+
+//                                     O(1) space
+
+import java.util.* ;
+import java.io.*;
+
+public class Solution {
+    public static boolean validateBST(BinaryTreeNode<Integer> root) {
+        return check(root, null, null);
+    }
+
+    private static boolean check(BinaryTreeNode<Integer> root, BinaryTreeNode<Integer> min, BinaryTreeNode<Integer> max){
+        if(root==null) return true;
+        
+        // Checking the boundaries for the root, the values that it can have
+        if((min!=null && min.data>root.data) || (max!=null && max.data<root.data)) return false;
+
+        if(!check(root.left, min, root)) return false;
+
+        return check(root.right, root, max);
+    }
+}
+

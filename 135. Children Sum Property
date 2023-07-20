@@ -1,0 +1,33 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                          DFS
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+    public static void changeTree(BinaryTreeNode < Integer > root) {
+        dfs(root);
+    }
+
+    private static int dfs(BinaryTreeNode < Integer > root){
+        if(root==null) return 0;
+        
+        int left = root.left==null?0:root.left.data;
+        int right = root.right==null?0:root.right.data;
+        
+        // Change the max
+        if(left+right<root.data){
+            if(root.left!=null) root.left.data = root.data;
+            else if(root.right!=null) root.right.data = root.data;
+        }
+        
+        left = dfs(root.left);
+        right = dfs(root.right);
+
+        if(root.left!=null || root.right!=null) root.data = left+right;
+        
+        return root.data;
+    }
+}

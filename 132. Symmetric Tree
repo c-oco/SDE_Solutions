@@ -1,0 +1,23 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                          DFS
+
+public class Solution {
+
+    public static boolean isSymmetric(BinaryTreeNode<Integer> root) {
+        return check(root, root);
+    }
+
+    private static boolean check(BinaryTreeNode<Integer> r1, BinaryTreeNode<Integer> r2){
+        if(r1==null && r2==null) return true;     
+        if(r1==null || r2==null) return false;    // If any one of them is null
+        
+        if(!r1.data.equals(r2.data)) return false;
+
+        if(!check(r1.left, r2.right)) return false;
+        if(!check(r1.right, r2.left)) return false;
+
+        return true;
+    }
+}

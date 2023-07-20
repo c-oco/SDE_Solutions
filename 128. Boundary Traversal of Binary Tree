@@ -1,0 +1,56 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+	public static ArrayList<Integer> traverseBoundary(TreeNode root){
+		ArrayList<Integer> ans = new ArrayList<>();
+	    
+	    if(root==null) return ans;
+	    
+	    ans.add(root.data);             // Add the root
+	    if(root.left==null && root.right==null) return ans;    
+
+		left(root.left, ans);       // Traverse left tree
+		
+		bottom(root, ans);          // Traverse bottom
+		
+		ArrayList<Integer> r = new ArrayList<>();
+		right(root.right, r);       // Traverse right tree
+
+        for(int i=r.size()-1; i>=0; i--)
+           ans.add(r.get(i));
+
+		return ans;
+	}
+
+	private static void left(TreeNode root, ArrayList<Integer> ans){
+		if(root==null) return ;
+		
+		if(root.left!=null || root.right!=null) ans.add(root.data);
+
+		if(root.left!=null) left(root.left, ans);     // So that we do not get the last leaf node 
+		else left(root.right, ans);
+	}
+	
+	private static void bottom(TreeNode root, ArrayList<Integer> ans){
+	    if(root==null) return ;
+	    
+		if(root.left==null && root.right==null) ans.add(root.data);
+
+		bottom(root.left, ans);
+		bottom(root.right, ans);
+	}
+	
+	private static void right(TreeNode root, ArrayList<Integer> r){
+		if(root==null) return ;
+		
+		if(root.left!=null || root.right!=null) r.add(root.data);;
+
+		if(root.right!=null) right(root.right, r);
+		else right(root.left, r);
+	}
+}

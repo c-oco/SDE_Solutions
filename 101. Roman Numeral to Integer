@@ -1,0 +1,65 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+//                                Iterating backwards
+
+public class Solution {
+    public static int romanToInt(String s) {
+        int n=0, num=0;
+        
+        for (int i=s.length()-1; i>=0; i--){
+
+            switch(s.charAt(i)) {
+                case 'I': num = 1; break;
+                case 'V': num = 5; break;
+                case 'X': num = 10; break;
+                case 'L': num = 50; break;
+                case 'C': num = 100; break;
+                case 'D': num = 500; break;
+                case 'M': num = 1000; break;
+            }
+            if (4*num < n) n -= num;
+            else n += num;
+        }
+        /* 4 is taken as it covers the smallest substraction needed for IV, where if any
+           other constant like 3 or 5 is chosen it would result in wrong answer */
+
+        return n;
+    }
+}
+
+
+
+//                                     Use of HashMap
+
+import java.util.HashMap;
+
+public class Solution {
+    public static int romanToInt(String s) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        
+        map.put('I', 1); map.put('V', 5); map.put('X', 10); map.put('L', 50); map.put('C', 100); map.put('D', 500); map.put('M', 1000);
+        
+        int n=0;
+        for(int i=0; i<s.length(); i++){
+            char ch = s.charAt(i);
+            
+            // Checking required subtractions needed
+            if(i!=0 && (ch=='V'||ch=='X') && s.charAt(i-1)=='I'){
+                n = n - (2*map.get('I')) + map.get(ch);
+            }
+            else if(i!=0 && (ch=='L'||ch=='C') && s.charAt(i-1)=='X'){
+                n = n - (2*map.get('X')) + map.get(ch);
+            }
+            else if(i!=0 && (ch=='D'||ch=='M') && s.charAt(i-1)=='C'){
+                n = n - (2*map.get('C')) + map.get(ch);
+            }
+            else{
+                n += map.get(ch);
+            }
+        }
+        
+        return n;
+    }
+}

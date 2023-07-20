@@ -1,0 +1,66 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                          DFS
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution 
+{
+    public static TreeNode<Integer> flattenBinaryTree(TreeNode<Integer> root)
+    {
+        return construct(root);
+    }
+
+	private static TreeNode<Integer> construct(TreeNode<Integer> root){
+		if(root==null) return null;
+
+		TreeNode right = construct(root.right);
+		TreeNode left = construct(root.left);
+
+		if(left!=null){
+			root.right = left;
+
+			while(left.right!=null) left = left.right;    // To get last node of left subtree
+
+			left.right = right;   // Attach to right
+		}
+
+		root.left = null;
+
+		return root;
+	} 
+}
+
+
+
+//                                           Iterative
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution 
+{
+    public static TreeNode<Integer> flattenBinaryTree(TreeNode<Integer> root)
+    {
+        TreeNode<Integer> curr = root;
+
+		while(curr!=null){
+			if(curr.left!=null){                         // If left subtree present
+				TreeNode<Integer> leftMax = curr.left;
+                
+				// Get the right Most node of left subtree 
+				while(leftMax.right!=null) leftMax = leftMax.right;
+
+				leftMax.right = curr.right;    // Attach the right subtree to this right most node
+				curr.right = curr.left;    // Switch the left subtree to right subtree
+				curr.left = null;         // Delete the attachment
+			}
+
+			curr = curr.right;    // Go to right subtree node, and again perform 
+		}
+
+		return root;
+    }
+}

@@ -1,0 +1,42 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+
+    public static int chessTournament(int[] pos, int n,  int c) 
+	{
+        Arrays.sort(pos);
+
+        int lb=1, ub=pos[n-1]-pos[0];
+        while(lb<=ub){
+            int mid = lb + (ub-lb)/2;
+
+            if(place(pos, mid, c))
+                lb = mid+1;
+            else
+                ub = mid-1;
+        }
+
+        return ub;
+    }
+
+    private static boolean place(int[] pos, int dist, int c){
+        int n=pos.length;
+        int players=1, last=pos[0];
+
+        for(int i=1; i<n; i++){
+            if(pos[i]-last >= dist){
+                last = pos[i];
+                players++;
+            }
+
+            if(players>=c) return true;
+        }
+
+        return false;
+    }
+}

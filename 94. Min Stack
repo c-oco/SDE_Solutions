@@ -1,0 +1,59 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                  Same can be done using stack and class Node
+
+//                                  Using Linked List
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+
+    static class MinStack {
+        class Node{
+            int val, min;
+            Node next;
+
+            Node(int val, int min, Node next){
+                this.val = val;
+                this.min = min;
+                this.next = next;
+            }
+        }
+
+        Node head;
+
+        MinStack() {
+            head = null;
+        }
+
+        void push(int num) {
+            if(head==null)
+                head = new Node(num, num, null);
+            else 
+                head = new Node(num, Math.min(num, head.min), head);
+        }
+
+        int pop() {
+            if(head==null) return -1;
+
+            Node node = head;
+            head = head.next;
+
+            return node.val;
+        }
+
+        int top() {
+            if(head==null) return -1;
+
+            return head.val;
+        }
+
+        int getMin() {
+            if(head==null) return -1;
+
+            return head.min;
+        }
+    }
+}
