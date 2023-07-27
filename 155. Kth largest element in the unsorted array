@@ -1,0 +1,73 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                   One method is to use sorting 
+
+//                                   Use of Priority Queue
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+
+	static int kthLargest(ArrayList<Integer> arr, int size, int K) {
+		PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder()) ;
+        
+        for(int n:arr){
+            pq.add(n) ;
+        }
+
+        while(K!=1){
+            pq.poll() ;
+            K-- ;
+        }
+
+        return pq.poll() ;
+	}
+}
+
+
+//                                   Use of Quick Select
+
+
+import java.util.* ;
+
+public class Solution {
+
+	static int kthLargest(ArrayList<Integer> arr, int size, int K) {
+		return quickSelect(arr, 0, size-1, size-K);
+	}
+
+	static int quickSelect(ArrayList<Integer> arr, int left, int right, int k){
+		if(left==right) return arr.get(left);
+
+		int pIndex = new Random().nextInt(right-left+1)+left;   // Choosing random pivot
+		pIndex = partition(arr, left, right, pIndex);   // Partition point
+
+		if(pIndex==k) return arr.get(k);
+		else if(pIndex<k) return quickSelect(arr, pIndex+1, right, k);
+		
+		return quickSelect(arr, left, pIndex-1, k);
+	}
+
+	static int partition(ArrayList<Integer> arr, int left, int right, int pIndex){
+		int pivot = arr.get(pIndex);     // Pivot
+		swap(arr, pIndex, right);        // Make the pivot the last element of this space
+		pIndex = left;                   
+
+		for(int i=left; i<=right; i++){
+			if(arr.get(i)<=pivot)         // Any element less than pivot should be shifted towards left boundary
+			   swap(arr, i, pIndex++);
+		}
+
+		return pIndex-1;
+	}
+
+	static void swap(ArrayList<Integer> arr, int i, int j){
+		int temp = arr.get(i);
+		arr.set(i, arr.get(j));
+		arr.set(j, temp);
+	}
+}  
+
+
+

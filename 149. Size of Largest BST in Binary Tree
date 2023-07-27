@@ -1,0 +1,30 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.* ;
+import java.io.*;
+
+public class Solution {
+	public static int largestBST(TreeNode<Integer> root) {
+        int[] ans = find(root);
+
+		return ans[0];
+	}
+
+	private static int[] find(TreeNode<Integer> root){
+		if(root==null){ 
+			return new int[]{0, (int)1e9, 0}; 
+		}
+
+		int[] left = find(root.left);
+
+		int[] right = find(root.right);
+        
+        // Check boundary 
+		if(left[2]<root.data && root.data<right[1]){
+			return new int[]{left[0]+right[0]+1, Math.min(left[1], root.data), Math.max(root.data, right[2])};
+		}
+
+		return new int[]{Math.max(left[0],right[0]), 0, (int)1e9};
+	}
+}

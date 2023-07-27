@@ -1,0 +1,28 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.* ;
+import java.io.*;
+
+
+public class Solution 
+{
+
+	public static int kthSmallest(TreeNode<Integer> root, int k) 
+	{
+	    return search(root, new int[]{k});
+	}
+
+	private static int search(TreeNode<Integer> root, int[] k){
+		if(root==null) return -1;
+        
+		int right = search(root.left, k);
+		if(right!=-1) return right;
+
+		if(--k[0]==0)
+		   return root.data;
+		    
+		return search(root.right, k);
+	} 
+}

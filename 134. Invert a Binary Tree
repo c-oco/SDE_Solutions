@@ -1,0 +1,61 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution{
+
+    public static TreeNode<Integer> invertBinaryTree(TreeNode<Integer> root, TreeNode<Integer> leaf) {
+    
+        if(root == null) return root;
+        
+        ArrayList<TreeNode<Integer>> st = new ArrayList<>();
+        
+        findNode(root,leaf,st);  // Get the path
+         
+        // Make new head
+        TreeNode<Integer> newHead = st.get(st.size()-1);
+        st.remove(st.size()-1);
+        
+        TreeNode<Integer> parent = newHead;
+        TreeNode<Integer> cur=null;
+        
+        while(st.size()>0){
+           cur = st.get(st.size()-1);
+           st.remove(st.size()-1);
+
+           if(cur.left != parent){  // Right is parent  
+              cur.right = cur.left;   // Change left to right
+              cur.left = null;    // Make left null
+           }
+           else cur.left = null;   // When left is the parent
+           
+           parent.left = cur;
+           parent = parent.left;
+        }
+     
+        return newHead;
+    }
+
+    public static boolean findNode(TreeNode<Integer> root, TreeNode<Integer> leaf,ArrayList<TreeNode<Integer>> st){
+    
+        st.add(root);
+        
+        if(root.left == null && root.right == null) {
+        
+            if(root.data.equals(leaf.data)) return true;
+            
+            st.remove(st.size()-1);
+            return false;
+        }
+        
+        if(root.left!=null && findNode(root.left,leaf,st)) return true;;
+        
+        if(root.right!=null && findNode(root.right,leaf,st)) return true;    
+        
+        st.remove(st.size()-1);
+        return false;
+    }
+
+}

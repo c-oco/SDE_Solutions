@@ -1,0 +1,65 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+//                                  Done on LeetCode (LC)
+
+//                                          DFS
+
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        int col[] = new int[graph.length];           // stores color of each node
+        
+        for(int i=0; i<graph.length; i++)
+            if(col[i]==0 && !dfs(i, 1, col, graph)){
+                return false;
+            }
+        
+        return true;
+    }
+    
+    private boolean dfs(int node, int color, int[] col, int[][] g){
+        col[node] = color;
+        
+        for(int vertex:g[node]){
+            if(col[vertex]==0){
+                if(!dfs(vertex, -color, col, g)) return false;
+            }
+            else if(col[vertex]==col[node])
+                return false;
+        }
+        return true;
+    }
+}
+
+
+
+//                                       BFS
+
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        int col[] = new int[graph.length];
+        
+        for(int i=0; i<graph.length; i++){
+           if(col[i]!=0) continue;             // If it is already colored
+
+           Queue<Integer> q = new LinkedList<>();
+           q.offer(i);
+           
+           col[i] = 1;
+           while(!q.isEmpty()){
+               int node = q.poll();
+               
+               for(int ver:graph[node]){
+                   if(col[ver]==0){
+                       col[ver] = -col[node];
+                       q.offer(ver);
+                   }else if(col[ver]==col[node])
+                       return false;
+               }
+           }
+        }
+        
+        return true;
+    }
+}

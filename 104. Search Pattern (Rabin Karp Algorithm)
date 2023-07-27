@@ -1,0 +1,83 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                       Naive Method
+
+import java.util.*;
+
+public class Solution {
+    public static List< Integer > stringMatch(String text, String pattern){
+        List<Integer> ans = new ArrayList<>();
+        
+        int i=0, j=0, prev=0, n=text.length(), m=pattern.length();
+        while(i<n){
+            while(i<n && j<m && text.charAt(i)==pattern.charAt(j)){
+                i++;
+                j++;
+            }
+
+            if(j==m) ans.add((i-m)+1);
+            
+            j=0;            // Reset to again check
+            i = prev+1;
+            prev = i;       // Reset to starting index+1, to cehck fro cases like aaaa
+        }
+
+        return ans;
+    }
+}
+
+
+//                                        Rabin Karp Method
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Solution {
+    public static List< Integer > stringMatch(String text, String pattern){
+        int n=text.length(), m=pattern.length();
+        List<Integer> ans = new ArrayList<>();
+
+        if(m>n) return ans;
+
+        int b=256;  // base, no of characters to consider in total
+        int h=1;    // hash of (m-1) to the power of b
+        int q=257;  // Prime no 
+
+        int hp=0, ht=0;
+
+        for(int i=0; i<m-1; i++)
+           h = (h*b)%q;
+ 
+        for(int i=0; i<m; i++){
+            hp = ( (hp*b) + pattern.charAt(i) )%q;    // Hash for pattern
+            ht = ( (ht*b) + text.charAt(i) )%q;      // Hash for text
+        }
+
+        for(int i=0; i<=n-m; i++){
+
+            if(hp==ht){
+                int j=0;
+            
+                while(j<m){
+                   if(text.charAt(i+j) != pattern.charAt(j)) break;
+
+                   j++;
+                }
+
+                if(j==m)
+                  ans.add(i+1);
+            }
+
+            if(i==n-m) break;
+            
+            // Remove first character and add current one
+            ht = ( (b* (ht - (text.charAt(i)*h)) ) + text.charAt(i+m) )%q;
+
+            if(ht<0)
+              ht += q;     // If the hash becomes -ve
+        }
+
+        return ans;
+    }
+}

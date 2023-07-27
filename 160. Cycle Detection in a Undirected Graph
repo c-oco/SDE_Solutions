@@ -1,0 +1,93 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                   bfs
+
+import java.util.*;
+
+public class Solution {
+    
+    public static String cycleDetection(int[][] edges, int n, int m) {
+        if(m==0) return "No";
+
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        
+        for(int i=0; i<=n; i++) adj.add(new ArrayList<>());
+
+        for(int[] edg:edges){                       // Adjacent List
+            adj.get(edg[0]).add(edg[1]);
+            adj.get(edg[1]).add(edg[0]);
+        }
+
+        boolean[] vis = new boolean[n+1];           // Visited array
+        
+        Queue<int[]> q = new LinkedList<>();
+        
+        for(int i=1; i<=n; i++){
+            if(!vis[i]){
+                q.add(new int[]{-1, i});
+                vis[i] = true;
+        
+                while(!q.isEmpty()){
+                    int[] pv = q.poll();
+        
+                    for(int neigh:adj.get(pv[1])){
+                        if(!vis[neigh]){
+                            q.add(new int[]{pv[1], neigh});
+                            vis[neigh] = true;
+                        }
+                        else if(pv[0]!=neigh) return "Yes";      // If re visit some node, not in case of parent and child
+                    }
+                }
+            }
+        }
+
+        return "No";
+    } 
+}
+
+
+//                                       DFS 
+
+import java.util.*;
+
+public class Solution {
+    
+    public static String cycleDetection(int[][] edges, int n, int m) {
+        if(m==0) return "No";
+
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        
+        for(int i=0; i<=n; i++) adj.add(new ArrayList<>());
+
+        for(int[] edg:edges){                // Adjacent List
+            adj.get(edg[0]).add(edg[1]);
+            adj.get(edg[1]).add(edg[0]);
+        }
+
+        boolean[] vis = new boolean[n+1];    // Visted array
+
+        for(int i=1; i<=n; i++){
+            if(!vis[i])
+               if(dfs(-1, i, adj, vis)) return "Yes";   
+        }
+
+        return "No";
+    }
+    
+    private static boolean dfs(int parent, int vert, ArrayList<ArrayList<Integer>> adj, boolean[] vis){
+
+        vis[vert] = true;
+
+        for(int neigh:adj.get(vert)){
+            if(!vis[neigh]){
+                vis[neigh] = true;
+                if(dfs(vert, neigh, adj, vis)) return true;
+            }
+            else if(parent!=neigh) return true;     // If re visit some node, not in case of parent and child
+        }
+
+        return false;
+    } 
+}
+

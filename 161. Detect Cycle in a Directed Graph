@@ -1,0 +1,83 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+//                                        DFS
+
+import java.util.ArrayList;
+public class Solution {
+  public static boolean detectCycleInDirectedGraph(int n, ArrayList < ArrayList < Integer >> edges) {
+      ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+      
+      for(int i=0; i<=n; i++) adj.add(new ArrayList<>());
+
+      for(ArrayList<Integer> edg:edges) adj.get(edg.get(0)).add(edg.get(1));    // Adjacent List
+
+      boolean[] vis = new boolean[n+1];      // Visited array
+
+      // also be called like, which nodes we currently have in our current stack
+      boolean[] samePath = new boolean[n+1];   // To test that we have the node in our current path or not
+
+      for(int i=1; i<=n; i++){
+          if(!vis[i])
+             if(dfs(i, adj, vis, samePath)) return true;   
+      }
+      return false;
+    }
+    
+    private static boolean dfs(int vert, ArrayList<ArrayList<Integer>> adj, boolean[] vis, boolean[] path){
+
+        vis[vert] = true;
+        path[vert] = true;
+
+        for(int neigh:adj.get(vert)){
+            if(!vis[neigh]){
+                vis[neigh] = true;
+                if(dfs(neigh, adj, vis, path)) return true;
+            }
+            else if(path[neigh]) return true;     // If the node was previously visited on the same path 
+        }
+
+        path[vert] = false;
+
+        return false;
+    }
+}
+
+
+
+//                                          BFS
+
+import java.util.*;
+public class Solution {
+  public static boolean detectCycleInDirectedGraph(int n, ArrayList < ArrayList < Integer >> edges) {
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        
+        for(int i=0; i<=n; i++) adj.add(new ArrayList<>());
+
+        int[] inDeg = new int[n+1];
+
+        for(ArrayList<Integer> edg:edges){
+          adj.get(edg.get(0)).add(edg.get(1));
+          inDeg[edg.get(1)]++;
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+
+        for(int i=1; i<=n; i++)
+           if(inDeg[i]==0)
+             q.add(i);
+        
+        int visited=0;          // If a cycle exists, the visted nodes will be less
+        while(!q.isEmpty()){
+          int node = q.poll();
+          visited++;
+
+          for(int neigh:adj.get(node))
+            if(--inDeg[neigh]==0)
+               q.add(neigh);
+        }
+
+        return visited<n;
+  }
+}

@@ -1,0 +1,85 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+//                                     BFS
+
+import java.util.* ;
+import java.io.*; 
+public class Solution 
+{
+    public static ArrayList<Integer> topologicalSort(ArrayList<ArrayList<Integer>> edges, int v, int e) 
+    {
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+
+        for(int i=0; i<v; i++) adj.add(new ArrayList<>());
+        
+        int[] inDeg = new int[v];   // Stores the inDeg
+
+        for(ArrayList<Integer> edg:edges){
+            adj.get(edg.get(0)).add(edg.get(1));
+            inDeg[edg.get(1)]++;
+        }
+        
+        ArrayList<Integer> ans = new ArrayList<>();
+        Queue<Integer> q = new LinkedList<>();
+        
+        for(int i=0; i<v; i++)
+            if(inDeg[i]==0)      // Get the starting nodes
+               q.add(i);
+
+        while(!q.isEmpty()){
+            int node = q.poll();   
+
+            ans.add(node);       
+
+            for(int nei:adj.get(node))
+               if(--inDeg[nei]==0)    // If we detach the current node from all its neighbours then if the neigh. indegree becomes 0 then it should be added in the queue 
+                  q.add(nei);
+        }
+
+        return ans;
+    }
+}
+
+
+
+//                                      DFS
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution 
+{
+    public static ArrayList<Integer> topologicalSort(ArrayList<ArrayList<Integer>> edges, int v, int e) 
+    {
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+
+        for(int i=0; i<v; i++) adj.add(new ArrayList<>());
+
+        for(ArrayList<Integer> edg:edges) adj.get(edg.get(0)).add(edg.get(1));
+        
+        Stack<Integer> st = new Stack<>();   // stores the nodes in reverse topological order
+        boolean[] vis = new boolean[v];
+
+        for(int i=0; i<v; i++)
+           if(!vis[i])
+              dfs(adj, i, vis, st);
+
+        ArrayList<Integer> ans = new ArrayList<>();
+
+        while(!st.isEmpty()) ans.add(st.pop());
+
+        return ans;
+    }
+
+    private static void dfs(ArrayList<ArrayList<Integer>> adj, int node, boolean[] vis, Stack<Integer> st){
+        vis[node] = true;
+
+        for(int nei:adj.get(node))
+            if(!vis[nei])
+               dfs(adj, nei, vis, st);
+
+        st.push(node);        // Add the node when all neigh. have been visited
+    }
+}

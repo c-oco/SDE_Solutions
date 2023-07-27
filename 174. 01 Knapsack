@@ -1,0 +1,93 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                     Memoization
+
+import java.util.*;
+
+public class Solution {
+	public static int maxProfit(ArrayList<Integer> values, ArrayList<Integer> weights, int n, int w) {
+		int[][] dp = new int[n][w+1];
+        
+        for(int[] row:dp)
+            Arrays.fill(row, -1);
+        
+        return memo(dp, n-1, w, weights, values);
+    }
+    
+    static int memo(int[][] dp, int i, int W, ArrayList<Integer> wt, ArrayList<Integer> val){
+        if(W==0) return 0;
+        
+        if(i==0) return wt.get(i)<=W?val.get(i):0;
+        
+        if(dp[i][W]!=-1) return dp[i][W];   // If pre computed
+        
+        int ntake = memo(dp, i-1, W, wt, val);       // Not take
+        
+        int take = Integer.MIN_VALUE;
+        if(wt.get(i)<=W)
+            take = val.get(i) + memo(dp, i-1, W-wt.get(i), wt, val);   // Take
+            
+        return dp[i][W] = Math.max(ntake, take);
+    }
+}
+
+
+
+//                                      Tabulation
+
+import java.util.ArrayList;
+
+public class Solution {
+	public static int maxProfit(ArrayList<Integer> val, ArrayList<Integer> wt, int n, int w) {
+		int[][] dp = new int[n][w+1];
+
+		for(int i=wt.get(0); i<=w; i++)       // Control the weight from 0th to sack weight
+		   dp[0][i] = val.get(0);
+
+		for(int i=1; i<n; i++){
+			for(int weight=0; weight<=w; weight++){
+				int ntake = dp[i-1][weight];       // Not take
+        
+                int take = Integer.MIN_VALUE;
+                if(wt.get(i)<=weight)
+                    take = val.get(i) + dp[i-1][weight-wt.get(i)];   // Take
+                    
+                dp[i][weight] = Math.max(ntake, take);
+			}
+		}
+
+		return dp[n-1][w];
+	}
+}
+
+
+
+//                                    Space Optimization
+
+import java.util.ArrayList;
+
+public class Solution {
+	public static int maxProfit(ArrayList<Integer> val, ArrayList<Integer> wt, int n, int w) {
+		int[] prev = new int[w+1];
+
+		for(int i=wt.get(0); i<=w; i++)       // Control the weight from 0th to sack weight
+		   prev[i] = val.get(0);
+
+		for(int i=1; i<n; i++){
+			int[] curr = new int[w+1];
+			for(int weight=0; weight<=w; weight++){
+				int ntake = prev[weight];       // Not take
+        
+                int take = Integer.MIN_VALUE;
+                if(wt.get(i)<=weight)
+                    take = val.get(i) + prev[weight-wt.get(i)];   // Take
+                    
+                curr[weight] = Math.max(ntake, take);
+			}
+			prev = curr;
+		}
+
+		return prev[w];
+	}
+}

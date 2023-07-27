@@ -1,0 +1,55 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.* ;
+import java.io.*; 
+public class Kthlargest {
+    private TreeNode root;
+    private int k;
+
+    Kthlargest(int k, int[] arr) {
+        root = null;
+        this.k = k;
+
+        for(int num:arr)
+           root = addTo(root, num);
+    }
+
+    void add(int num) {
+        root = addTo(root, num);
+    }
+
+    TreeNode addTo(TreeNode root, int num){
+        if(root==null) return new TreeNode(num);
+
+        root.count++;
+        if(num<root.val) root.left = addTo(root.left, num);
+        else root.right = addTo(root.right, num);
+
+        return root;
+    }
+
+    int getKthLargest() {
+        int count = k;
+        TreeNode walker = root;
+
+        while (count > 0) {
+            int pos = 1 + (walker.right != null ? walker.right.count : 0);
+            if (count == pos) break;
+            if (count > pos) {
+                count -= pos;
+                walker = walker.left;
+            } else if (count < pos)
+                walker = walker.right;
+        }
+        return walker.val;
+    }
+
+    class TreeNode{
+        int val, count=1;
+        TreeNode left, right;
+        TreeNode(int value){
+            val = value;
+        }
+    }
+}

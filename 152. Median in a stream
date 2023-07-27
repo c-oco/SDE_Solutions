@@ -1,0 +1,35 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.*;
+
+public class Solution {
+    public static int[] findMedian(int[] arr, int n) {
+        PriorityQueue<Integer> max = new PriorityQueue<>(Collections.reverseOrder());  // Stores first half
+        PriorityQueue<Integer> min = new PriorityQueue<>();  // Stores 2nd half
+
+        boolean even = true;  // Current size of the stream;
+        int[] ans = new int[n];
+        
+        int i=0;
+        for(int num:arr){
+            if(even){         // Even means both have equal
+                min.add(num);      // Push into 2nd half
+                max.add(min.poll());   // Take out the min from 2nd half, now 1st half has 1 extra number
+            }else{
+                max.add(num);     // Push into 1st half
+                min.add(max.poll());   // Take out the max from 1st half, now both will have equal numbers
+            }
+
+            even = !even;
+
+            if(even)
+                ans[i++] = max.peek() + (min.peek()-max.peek())/2;
+            else
+                ans[i++] = max.peek();
+        }
+
+        return ans;
+    }
+}

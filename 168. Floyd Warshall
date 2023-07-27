@@ -1,0 +1,36 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+
+import java.util.ArrayList;
+
+public class Solution {
+  static int floydWarshall(int n, int m, int src, int dest, ArrayList<ArrayList<Integer>> edges) {
+    int[][] dist = new int[n][n];     // Dist matrix
+    for(int i=0; i<n; i++)
+      for(int j=0; j<n; j++)
+        if(i==j) dist[i][j] = 0;
+        else dist[i][j] = (int)1e9;
+
+    for(ArrayList<Integer> edg:edges)
+       dist[edg.get(0)-1][edg.get(1)-1] = edg.get(2);
+    
+    // We use a middleman to crack a deal which is costly if we will go directly to talk to the person
+    for(int middleman=0; middleman<n; middleman++){
+      for(int i=0; i<n; i++){
+        for(int j=0; j<n; j++){
+          if(dist[i][middleman]!=(int)1e9 && dist[middleman][j]!=(int)1e9 && dist[i][middleman] + dist[middleman][j] < dist[i][j])
+             dist[i][j] = dist[i][middleman] + dist[middleman][j];
+        }
+      }
+    } 
+    
+    // In case of cycle
+    for(int i=0; i<n; i++)
+      for(int j=0; j<n; j++)
+         if(i==j && dist[i][j]<0) return (int)1e9;
+
+    return dist[src-1][dest-1];
+  }
+}

@@ -1,0 +1,41 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    static int bellmonFord(int n, int m, int src, int dest, ArrayList<ArrayList<Integer>> edges) {
+      int[] dist = new int[n];
+      Arrays.fill(dist, (int)1e9);
+      dist[src-1] = 0;       // For source dist is 0 for self
+
+      for(int i=0; i<n-1; i++){
+        for(ArrayList<Integer> edg:edges){
+          int u = edg.get(0)-1;
+          int v = edg.get(1)-1;
+          int wt = edg.get(2);
+          
+          // Relax if dist is less
+          if(dist[u]!=(int)1e9 && dist[u]+wt < dist[v]){
+            dist[v] = dist[u] + wt;
+          }
+        }
+      }
+      
+      // Check for -ve cycle
+      for(ArrayList<Integer> edg:edges){
+        int u = edg.get(0)-1;
+        int v = edg.get(1)-1;
+        int wt = edg.get(2);
+
+        if(dist[u]!=(int)1e9 && dist[u]+wt < dist[v]){
+          return (int)1e9;
+        }
+      }
+
+      return dist[dest-1]==(int)(1e9)?(int)1e9:dist[dest-1];
+    }
+    
+}

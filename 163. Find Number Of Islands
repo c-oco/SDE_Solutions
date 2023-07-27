@@ -1,0 +1,86 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+//                                      DFS
+
+public class Solution 
+{
+    static int[] row = { 0, -1, 0, 1, -1, -1, 1, 1};
+    static int[] col = {-1,  0, 1, 0, -1,  1, 1, -1};
+    public static int getTotalIslands(int[][] mat) 
+	{ 
+        int n=mat.length, m=mat[0].length;
+
+        boolean[][] vis = new boolean[n][m];
+        int islands=0;
+
+        for(int i=0; i<n; i++)
+            for(int j=0; j<m; j++)
+                if(mat[i][j]==1 && !vis[i][j]){
+                    islands++;   // Count the no of islands/components
+
+                    dfs(mat, i, j, vis, n, m);
+                }
+
+        return islands;
+    }
+
+    private static void dfs(int[][] mat, int x, int y, boolean[][] vis, int n, int m){
+        vis[x][y] = true;
+
+        for(int i=0; i<8; i++){
+            int r = x+row[i], c = y+col[i];
+
+            if(r>=0 && r<n && c>=0 && c<m && mat[r][c]==1)
+                if(!vis[r][c])
+                  dfs(mat, r, c, vis, n, m);
+        }
+    }
+}
+
+
+
+//                                       BFS
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class Solution 
+{
+    static int[] row = { 0, -1, 0, 1, -1, -1, 1, 1};
+    static int[] col = {-1,  0, 1, 0, -1,  1, 1, -1};
+    public static int getTotalIslands(int[][] mat) 
+	{ 
+        int n=mat.length, m=mat[0].length;
+
+        boolean[][] vis = new boolean[n][m];
+        int islands=0;
+
+        Queue<int[]> q = new LinkedList<>();
+
+        for(int i=0; i<n; i++)
+            for(int j=0; j<m; j++)
+                if(mat[i][j]==1 && !vis[i][j]){
+                    islands++;   // Count the no of islands/components
+
+                    q.add(new int[]{i, j});
+
+                    while(!q.isEmpty()){
+                        int[] cor = q.poll();
+
+                        vis[cor[0]][cor[1]] = true;
+
+                        for(int k=0; k<8; k++){
+                            int r = cor[0]+row[k], c = cor[1]+col[k];
+                
+                            if(r>=0 && r<n && c>=0 && c<m && mat[r][c]==1)
+                                if(!vis[r][c])
+                                   q.add(new int[]{r, c});
+                        }
+                    }
+                }
+
+        return islands;
+    }
+}

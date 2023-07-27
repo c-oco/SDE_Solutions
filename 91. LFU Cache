@@ -1,0 +1,73 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.* ;
+import java.io.*; 
+
+public class LFUCache {
+    private HashMap<Integer, int[]> cache;
+    private HashMap<Integer, LinkedHashSet<Integer>> freq;
+    private int minF;
+    private int capacity;
+
+	LFUCache(int capacity) {
+        cache = new HashMap<>();
+        freq = new HashMap<>();
+        minF = 0;
+        this.capacity = capacity;
+	}
+
+    void insert(int key, int frequency, int value){
+        cache.put(key, new int[]{frequency, value});
+        
+        freq.putIfAbsent(frequency, new LinkedHashSet<>());
+        freq.get(frequency).add(key);        
+    }
+
+	int get(int key) {
+        if(!cache.containsKey(key)) return -1;
+
+        int[] f_v = cache.get(key);
+        
+        Set<Integer> keys = freq.get(f_v[0]);
+        keys.remove(key);
+
+        if(keys.isEmpty()){
+            freq.remove(f_v[0]);
+            
+            if(f_v[0]==minF)
+              ++minF;
+        }
+
+        insert(key, f_v[0]+1, f_v[1]);
+
+        return f_v[1];
+	}
+
+	void put(int key, int value) {
+        if(capacity<=0) return ;
+        
+        if(cache.containsKey(key)){
+            int[] f_v = cache.get(key);
+
+            cache.put(key, new int[]{f_v[0], value});
+            get(key);
+
+            return ;
+        }
+        
+        if(cache.size()==capacity){
+            Set<Integer> keys = freq.get(minF);
+            int oldKey = keys.iterator().next();
+            
+            cache.remove(oldKey);
+            keys.remove(oldKey);
+
+            if(keys.isEmpty()) freq.remove(minF);
+        }
+
+        minF = 1;
+        insert(key, 1, value);
+	}
+}

@@ -1,0 +1,104 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                     BFS
+
+import java.util.*;
+
+public class Solution 
+{
+    public static String serializeTree(TreeNode<Integer> root)
+    {
+        if(root==null) return "";
+        
+        StringBuilder sb = new StringBuilder();
+        Queue<TreeNode<Integer>> q = new LinkedList<>();
+        q.add(root);
+
+        while(!q.isEmpty()){
+            TreeNode<Integer> node = q.poll();
+            
+            if(node==null){
+                sb.append("# ");  // Represents null node 
+                continue;
+            } 
+            
+            sb.append(node.data+" ");
+            q.add(node.left);
+            q.add(node.right);
+        }
+        
+        // Making a complete Binary Tree, so that its easily deserialized
+        return sb.toString();
+    }
+    
+    public static TreeNode<Integer> deserializeTree(String str)
+    {
+        if(str.length()==0) return null;
+
+        String[] nodes = str.split(" ");
+        Queue<TreeNode<Integer>> q = new LinkedList<>();
+        
+        // Root node
+        TreeNode<Integer> root = new TreeNode<Integer>(Integer.parseInt(nodes[0]));
+        q.add(root);
+
+        for(int i=1; i<nodes.length; i++){
+            TreeNode<Integer> node = q.poll();
+
+            if(!nodes[i].equals("#")){
+                node.left = new TreeNode<Integer>(Integer.parseInt(nodes[i]));
+                q.add(node.left);
+            }
+
+            if(!nodes[++i].equals("#")){
+                node.right = new TreeNode<Integer>(Integer.parseInt(nodes[i]));
+                q.add(node.right);
+            }
+        }
+
+        return root;
+    }
+}
+
+
+//                                     DFS
+
+import java.util.*;
+
+public class Solution 
+{
+    public static String serializeTree(TreeNode<Integer> root)
+    {
+        return serial(new StringBuilder(), root).toString();
+    }
+    
+    private static StringBuilder serial(StringBuilder str, TreeNode root) {
+        if (root == null) return str.append("#");
+
+        str.append(root.data).append(",");
+
+        serial(str, root.left).append(",");
+        serial(str, root.right);
+        
+        return str;
+    }
+    
+    public static TreeNode<Integer> deserializeTree(String str)
+    {   
+        return deserial(new LinkedList<>(Arrays.asList(str.split(","))));
+    }
+    
+    private static TreeNode deserial(Queue<String> q) {
+        String val = q.poll();
+        if ("#".equals(val)) return null;
+
+        TreeNode root = new TreeNode(Integer.valueOf(val));
+
+        root.left = deserial(q);
+        root.right = deserial(q);
+        
+        return root;
+    }
+}
+

@@ -1,0 +1,30 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.* ;
+import java.io.*; 
+	
+public class Solution {
+	public static int findCelebrity(int n) {
+		Stack<Integer> st = new Stack<>();
+
+		for(int i=0; i<n; i++) st.push(i);
+
+		while(st.size()>1){
+			int p2 = st.pop(), p1 = st.pop();
+            
+			if(Runner.knows(p1, p2)) st.push(p2);    // If p1 knows p2
+			else st.push(p1);                        // vice versa
+		}
+        
+        for(int i=0; i<n; i++){
+			if(i!=st.peek()){
+				if(Runner.knows(st.peek(), i)) return -1;       // Check if celebrity knows anyone
+				if(!Runner.knows(i, st.peek())) return -1;     // Everyone should know the celebrity
+			}
+		}
+
+		return st.peek();
+    }
+}

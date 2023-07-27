@@ -1,0 +1,41 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.ArrayList;
+
+public class Solution {
+    public static ArrayList<ArrayList<Integer>> depthFirstSearch(int v, int e, ArrayList<ArrayList<Integer>> edges) {
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        for(int i=0; i<v; i++) adj.add(new ArrayList<>());
+
+        for(ArrayList<Integer> edg:edges){
+            adj.get(edg.get(0)).add(edg.get(1));
+            adj.get(edg.get(1)).add(edg.get(0));   // Adjacent list
+        }
+       
+        boolean[] vis = new boolean[v];      // Visited array
+
+        for(int i=0; i<v; i++)
+           if(!vis[i]){           // In case of connected graph we get the list in a single traversal, else multiple componeents will be there 
+               ArrayList<Integer> list = new ArrayList<>();
+               dfs(adj, i, vis, list);
+               ans.add(new ArrayList<>(list));
+           }
+
+        return ans;
+    }
+
+    private static void dfs(ArrayList<ArrayList<Integer>> adj, int vert, boolean[] vis, ArrayList<Integer> list){
+
+        list.add(vert);
+        vis[vert] = true;
+
+        for(int neigh:adj.get(vert))
+           if(!vis[neigh]){
+               dfs(adj, neigh, vis, list);
+           }
+    }
+}

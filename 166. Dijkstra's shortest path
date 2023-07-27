@@ -1,0 +1,48 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                   Using Priority Queue
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	
+	public static ArrayList < Integer > dijkstra(ArrayList< ArrayList < Integer > > vec, int v, int e, int source){
+		ArrayList<ArrayList<int[]>> adj = new ArrayList<>();
+		for(int i=0; i<v; i++) adj.add(new ArrayList<>());
+
+		for(int i=0; i<vec.size(); i++){
+		    ArrayList<Integer> edg = vec.get(i);
+
+			adj.get(edg.get(0)).add(new int[]{edg.get(1), edg.get(2)});
+			adj.get(edg.get(1)).add(new int[]{edg.get(0), edg.get(2)});
+	    }
+
+		ArrayList<Integer> dist = new ArrayList<>();
+		for(int i=0; i<v; i++) dist.add(Integer.MAX_VALUE);    // Fill tha max distance
+
+		find(adj, source, dist);      // Find one to all shortest distance
+
+		return dist;
+	}
+
+	private static void find(ArrayList<ArrayList<int[]>> adj, int sou, ArrayList<Integer> dist){
+		dist.set(sou, 0);    // Set the source distance to 0
+
+		PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1]-b[1]);
+		pq.add(new int[]{sou, 0});
+
+		while(!pq.isEmpty()){
+			int[] n_w = pq.poll();
+
+			for(int[] ne_w:adj.get(n_w[0])){
+
+				if(n_w[1]+ne_w[1] < dist.get(ne_w[0])){      // If distnace to neighbour(ne_w) is less than through this node(n_w)
+					dist.set(ne_w[0], n_w[1] + ne_w[1]);
+
+					pq.add(new int[]{ne_w[0], dist.get(ne_w[0])});
+				}
+			}
+		}
+	} 
+}

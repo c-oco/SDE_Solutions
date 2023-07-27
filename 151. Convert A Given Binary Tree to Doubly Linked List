@@ -1,0 +1,33 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.* ;
+import java.io.*;
+
+public class Solution {
+	
+	public static BinaryTreeNode<Integer> BTtoDLL(BinaryTreeNode<Integer> root) {
+		return dfs(root);
+	}
+
+	private static BinaryTreeNode<Integer> dfs(BinaryTreeNode<Integer> root){
+		if(root==null) return null;
+
+		BinaryTreeNode<Integer> right = dfs(root.right);
+        
+		if(right!=null)
+          right.left = root;   // If its a leaf node then right is null
+		
+		root.right = right;    // Connect the right side
+		if(root.left==null) return root;       // If we nave nothing in left
+
+		BinaryTreeNode<Integer> left = dfs(root.left);
+
+		BinaryTreeNode<Integer> node = left;
+		while(node.right!=null) node = node.right;  // Go to last left node
+        node.right = root;
+		root.left = node;
+
+		return left;
+	}
+}

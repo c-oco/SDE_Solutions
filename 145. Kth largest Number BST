@@ -1,0 +1,54 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                        DFS ( Using arraylist )
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+	public static int KthLargestNumber(TreeNode<Integer> root, int k) {
+		ArrayList<Integer> in = new ArrayList<>();
+        
+		search(root, k, in);
+
+		return in.size()<k?-1:in.get(k-1);
+	}
+
+	private static void search(TreeNode<Integer> root, int k, ArrayList<Integer> in){
+		if(root==null) return ;
+
+		search(root.right, k, in);
+
+		in.add(root.data);
+		if(k==in.size())
+		   return ;
+		    
+		search(root.left, k, in);
+	} 
+}
+
+
+
+//                                     DFS ( without arraylist )
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+	public static int KthLargestNumber(TreeNode<Integer> root, int k) {
+		return search(root, new int[]{k});
+	}
+
+	private static int search(TreeNode<Integer> root, int[] k){
+		if(root==null) return -1;
+        
+		int right = search(root.right, k);
+		if(right!=-1) return right;
+
+		if(--k[0]==0)
+		   return root.data;
+		    
+		return search(root.left, k);
+	} 
+}

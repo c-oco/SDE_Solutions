@@ -1,0 +1,45 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+
+    static class BSTIterator{
+        private Stack<TreeNode<Integer>> st;
+        BSTIterator(TreeNode<Integer> root){
+            st = new Stack<>();
+
+            push(root);
+        }
+
+        int next(){
+            TreeNode<Integer> node = st.pop();
+ 
+            push(node.right);
+
+            return node.data;
+        }
+
+        boolean hasNext(){
+            return !st.isEmpty();
+        }
+
+        private void push(TreeNode<Integer> node){
+            while(node!=null){
+                st.push(node);
+                node = node.left;
+            }
+        }
+    }
+}
+
+/*
+    Your BSTIterator object will be instantiated and called as such:
+    BSTIterator iterator = new BSTIterator(root);
+    while(iterator.hasNext())
+    {
+       print(iterator.next()+" ");
+    }
+*/

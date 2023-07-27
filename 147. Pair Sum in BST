@@ -1,0 +1,110 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                   DFS -  Using HashSet, BFS can also use same technique
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+	public static boolean pairSumBst(BinaryTreeNode root, int k) {
+		return find(root, k, new HashSet<>());
+	}
+
+	private static boolean find(BinaryTreeNode root, int k, HashSet<Integer> set) {
+		if(root==null) return false;
+
+		if(set.contains(k-root.data)) return true;
+
+		set.add(root.data);
+
+		if(find(root.left, k, set)) return true;
+
+		if(find(root.right, k, set)) return true;
+
+		return false;
+	}
+}
+
+
+
+//                                    DFS - Without using HashSet
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+	public static boolean pairSumBst(BinaryTreeNode root, int k) {
+		return find(root, root, k);
+	}
+
+	private static boolean find(BinaryTreeNode root, BinaryTreeNode curr, int k) {
+		if(curr==null) return false;
+        else if(findNext(curr, root, k-curr.data)) return true;
+		else return (find(root, curr.left, k) || find(root, curr.right, k));
+	}
+
+	private static boolean findNext(BinaryTreeNode prev, BinaryTreeNode root, int k){
+		
+		while(root!=null){
+			if(root!=prev && k==root.data) return true;
+			else if(k<root.data) root = root.left;
+			else root = root.right;  
+		}
+
+		return false;
+	}
+}
+
+
+
+//                                       Using BST Iterator
+
+import java.util.* ;
+import java.io.*; 
+
+class BSTIterator{
+	private Stack<BinaryTreeNode> st;
+	private boolean dir ;
+
+	BSTIterator(BinaryTreeNode node, boolean dir){
+		st = new Stack<>();
+		this.dir = dir;
+
+		push(node);
+	}
+
+	public int next(){
+		BinaryTreeNode node = st.pop();
+
+		push(dir?node.right:node.left);
+
+		return node.data;
+	}
+
+	private void push(BinaryTreeNode node){
+		while(node!=null){
+			st.push(node);
+			node = dir?node.left:node.right;
+		}
+	}
+}
+
+public class Solution {
+	public static boolean pairSumBst(BinaryTreeNode root, int k) {
+		BSTIterator left = new BSTIterator(root, true);
+		BSTIterator right = new BSTIterator(root, false);
+
+		int lb=left.next(), ub=right.next();
+
+		while(lb<ub){
+			if(lb+ub==k) return true;
+			else if(lb+ub<k) lb = left.next();
+			else ub = right.next();
+		}
+
+		return false;
+	}
+}
+
+

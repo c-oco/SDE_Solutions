@@ -1,0 +1,66 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                    DFS
+
+public class Solution{
+    static int[] row = {0, -1, 0, 1};
+    static int[] col = {-1, 0, 1, 0};
+    public static int[][] floodFill(int[][] image, int x, int y, int newColor)
+    {   
+        // If we do not check the color then, we again visit our same node, to avoid either use a visted array or check for same color
+        if(image[x][y] == newColor) return image;
+
+        dfs(image, x, y, image[x][y], newColor);
+
+        return image;
+    }
+
+    private static void dfs(int[][] image, int x, int y, int oldC, int newC){
+        image[x][y] = newC;
+
+        for(int i=0; i<4; i++){
+            int r = x+row[i], c = y+col[i];
+
+            if(r>=0 && r<image.length && c>=0 && c<image[0].length && image[r][c]==oldC){
+                dfs(image, r, c, oldC, newC);
+            }
+        }
+    } 
+}
+
+
+
+//                                          BFS
+
+import java.util.*;
+
+public class Solution {
+    static int[] row = {0, -1, 0, 1};
+    static int[] col = {-1, 0, 1, 0};
+
+    public static int[][] floodFill(int[][] image, int x, int y, int newColor)
+    {
+        if(image[x][y]==newColor) return image;
+
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{x, y});
+        int oldC = image[x][y];
+
+        while(!q.isEmpty()){
+            int[] cor = q.poll();
+
+            image[cor[0]][cor[1]] = newColor;
+
+            for(int i=0; i<4; i++){
+                int r = cor[0]+row[i], c = cor[1]+col[i];
+
+                if(r>=0 && r<image.length && c>=0 && c<image[0].length && image[r][c]==oldC)
+                   q.add(new int[]{r, c});
+            }
+        }
+
+        return image;
+    }
+}
+
