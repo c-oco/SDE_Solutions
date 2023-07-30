@@ -1,0 +1,126 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+//                                     Memoization
+
+import java.util.*;
+
+public class Solution {
+
+	public static int longestIncreasingSubsequence(int arr[]) {
+		int n = arr.length;
+		int[][] dp = new int[n][n+1];
+
+		for(int[] row:dp)
+		   Arrays.fill(row, -1);
+
+		return lis(0, -1, arr, dp);
+	}
+    
+	private static int lis(int i, int prev, int[] arr, int[][] dp){
+		if(i==arr.length){
+			return 0;
+		}
+
+		if(dp[i][prev+1]!=-1) return dp[i][prev+1];
+
+		int ntake = lis(i+1, prev, arr, dp);
+        
+		int take = 0;
+		if(prev==-1 || arr[prev]<arr[i]) 
+		   take = 1 + lis(i+1, i, arr, dp);
+
+		return dp[i][prev+1] = Math.max(take, ntake);
+	}
+}
+
+
+
+//                                        Tabulation
+
+import java.util.*;
+
+public class Solution {
+
+	public static int longestIncreasingSubsequence(int arr[]) {
+		int n = arr.length;
+		int[][] dp = new int[n+1][n+1];
+
+		for(int i=n-1; i>=0; i--){
+			for(int prev=i-1; prev>=-1; prev--){
+				int ntake = dp[i+1][prev+1];
+        
+		        int take = 0;
+		        if(prev==-1 || arr[prev]<arr[i]) 
+		           take = 1 + dp[i+1][i+1];
+        
+		        dp[i][prev+1] = Math.max(take, ntake);
+			}
+		}
+
+		return dp[0][0];
+	}
+}
+
+
+
+//                                       Optimized Tabulation
+
+import java.util.*;
+
+public class Solution {
+
+	public static int longestIncreasingSubsequence(int arr[]) {
+		int n = arr.length;
+		int[] old = new int[n+1];
+		int[] curr = new int[n+1];
+
+		for(int i=n-1; i>=0; i--){
+			for(int prev=i-1; prev>=-1; prev--){
+				int ntake = old[prev+1];
+        
+		        int take = 0;
+		        if(prev==-1 || arr[prev]<arr[i]) 
+		           take = 1 + old[i+1];
+        
+		        curr[prev+1] = Math.max(take, ntake);
+			}
+			old = curr;
+		}
+
+		return old[0];
+	}
+}
+
+
+
+//                                       Binary Search
+
+import java.util.*;
+
+public class Solution {
+
+	public static int longestIncreasingSubsequence(int arr[]) {
+		int[] piles = new int[arr.length];
+        int size = 0;
+        
+        for(int num:arr){
+            int i = 0, j = size;
+            
+            while(i<j){
+                int m = (i + j) / 2;
+                if (piles[m]<num)
+                    i = m + 1;
+                else
+                    j = m;
+            }
+            
+            piles[i] = num;
+            
+            if(i==size) size++;
+        }
+        
+        return size;
+	}
+}

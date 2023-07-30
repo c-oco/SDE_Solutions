@@ -1,0 +1,82 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+//                                   Kosaraju's Alogrithm
+
+import java.util.*;
+
+public class Solution {
+
+    private static void orderByFinishTime(int node, int[] vis, ArrayList<ArrayList<Integer>> adj, Stack<Integer> st) {
+        vis[node] = 1;
+        
+        for(int nei:adj.get(node)){
+            if(vis[nei]==0){
+                orderByFinishTime(nei, vis, adj, st);
+            }
+        }
+        
+        st.push(node);
+    }
+
+    private static void dfs(int node, int[] vis, ArrayList<ArrayList<Integer>> adjT, List<Integer> comp) {
+        vis[node] = 1;
+        comp.add(node);
+
+        for(int nei:adjT.get(node)){
+            if(vis[nei]==0){
+                dfs(nei, vis, adjT, comp);
+            }
+        }
+    }
+
+    public static List<List<Integer>> stronglyConnectedComponents(int n, int[][] edges) {
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        for(int i=0; i<n; i++) adj.add(new ArrayList<>());
+
+        for(int[] edg:edges) adj.get(edg[0]).add(edg[1]);
+ 
+        int[] vis = new int[n];
+
+        // Order By finish Time
+        Stack<Integer> st = new Stack<Integer>();
+        for(int i = 0; i < n; i++){
+            if(vis[i]==0){
+                orderByFinishTime(i, vis, adj, st);
+            }
+        }
+        
+        ArrayList<ArrayList<Integer>> adjT = new ArrayList<>();
+        for(int i = 0; i < n; i++) adjT.add(new ArrayList<Integer>());
+        
+        // Reverse the edges
+        for(int i = 0; i < n; i++){
+            vis[i] = 0;
+            
+            for(int nei:adj.get(i)){
+                adjT.get(nei).add(i);
+            }
+        }
+
+        List<List<Integer>> ans = new ArrayList<>();
+        
+        // Count the number of scc's 
+        int scc = 0;
+        while(!st.isEmpty()){
+            int node = st.pop();
+            
+            if(vis[node]==0){
+                scc++;
+                
+                List<Integer> comp = new ArrayList<>();
+                dfs(node, vis, adjT, comp);
+                ans.add(new ArrayList<>(comp));
+            }
+        }
+        
+        return ans;
+    }
+}
+
+

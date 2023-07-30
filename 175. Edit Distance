@@ -1,0 +1,138 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+//                                        Recursion
+
+public class Solution {
+
+    public static int editDistance(String str1, String str2) {
+        int n=str1.length(), m=str2.length();
+
+        return memo(n-1, m-1, str1, str2);
+    }
+
+	private static int memo(int i, int j, String s, String t){
+		if(i<0) return j+1;
+        if(j<0) return i+1;
+        
+		int take = 0, ntake = 0;
+		if(s.charAt(i)==t.charAt(j)){
+			return take = memo(i-1, j-1, s, t);
+		}
+        else{
+                        //     Delete             Insert
+            ntake = Math.min(memo(i-1,j,s,t), memo(i,j-1,s,t));
+            // replace 
+            return ntake = 1 + Math.min(ntake, memo(i-1,j-1,s,t));
+        }
+	} 
+}
+
+
+
+//                                        Memoization
+
+import java.util.Arrays;
+
+public class Solution {
+
+    public static int editDistance(String str1, String str2) {
+        int n=str1.length(), m=str2.length();
+
+        int[][] dp = new int[n][m];
+
+        for(int[] row:dp)
+           Arrays.fill(row, -1);
+
+        return memo(n-1, m-1, str1, str2, dp);
+    }
+
+	private static int memo(int i, int j, String s, String t, int[][] dp){
+		if(i<0) return j+1;
+        if(j<0) return i+1;
+
+        if(dp[i][j]!=-1) return dp[i][j];
+        
+		int ntake = 0;
+		if(s.charAt(i)==t.charAt(j)){
+			return dp[i][j] = memo(i-1, j-1, s, t, dp);
+		}
+        else{
+                        //     Delete             Insert
+            ntake = Math.min(memo(i-1,j,s,t,dp), memo(i,j-1,s,t,dp));
+            // replace 
+            return dp[i][j] = 1 + Math.min(ntake, memo(i-1,j-1,s,t,dp));
+        }
+	} 
+}
+
+
+
+//                                        Tabulation
+
+import java.util.Arrays;
+
+public class Solution {
+
+    public static int editDistance(String str1, String str2) {
+        int n=str1.length(), m=str2.length();
+
+        int[][] dp = new int[n+1][m+1];
+        
+        for(int i=0; i<=n; i++) dp[i][0] = i;
+        for(int j=0; j<=m; j++) dp[0][j] = j;  
+
+        for(int i=1; i<=n; i++){
+            for(int j=1; j<=m; j++){
+                if(str1.charAt(i-1)==str2.charAt(j-1)){
+		        	dp[i][j] = dp[i-1][j-1];
+		        }
+                else{
+                                //     Delete      Insert
+                    int ntake = Math.min(dp[i-1][j], dp[i][j-1]);
+                    // replace 
+                    dp[i][j] = 1 + Math.min(ntake, dp[i-1][j-1]);
+                }
+            }
+        }
+
+        return dp[n][m];
+    }
+}
+
+
+
+//                                     Space Optimization
+
+import java.util.Arrays;
+
+public class Solution {
+
+    public static int editDistance(String str1, String str2) {
+        int n=str1.length(), m=str2.length();
+
+        int[] prev = new int[m+1];
+        
+        for(int j=0; j<=m; j++) prev[j] = j;  
+
+        for(int i=1; i<=n; i++){
+            int[] curr = new int[m+1];
+            curr[0] = i; 
+            for(int j=1; j<=m; j++){
+                if(str1.charAt(i-1)==str2.charAt(j-1)){
+		        	curr[j] = prev[j-1];
+		        }
+                else{
+                                //     Delete      Insert
+                    int ntake = Math.min(prev[j], curr[j-1]);
+                    // replace 
+                    curr[j] = 1 + Math.min(ntake, prev[j-1]);
+                }
+            }
+            prev = curr;
+        }
+
+        return prev[m];
+    }
+}

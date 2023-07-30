@@ -1,0 +1,95 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+//                                    Memoization
+
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution {
+    public static int maxIncreasingDumbbellsSum(ArrayList<Integer> rack, int n) {
+        int[][] dp = new int[n][n+1];
+
+		for(int[] row:dp)
+		   Arrays.fill(row, -1);
+
+		return lis(0, -1, rack, dp);
+	}
+    
+	private static int lis(int i, int prev, ArrayList<Integer> arr, int[][] dp){
+		if(i==arr.size()){
+			return 0;
+		}
+
+		if(dp[i][prev+1]!=-1) return dp[i][prev+1];
+
+		int ntake = lis(i+1, prev, arr, dp);
+        
+		int take = 0;
+		if(prev==-1 || arr.get(prev)<arr.get(i)) 
+		   take = arr.get(i) + lis(i+1, i, arr, dp);
+
+		return dp[i][prev+1] = Math.max(take, ntake);
+	}
+}
+
+
+
+
+//                                      Tabulation
+
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution {
+    public static int maxIncreasingDumbbellsSum(ArrayList<Integer> rack, int n) {
+        int[][] dp = new int[n+1][n+1];
+
+		for(int i=n-1; i>=0; i--){
+			for(int prev=i-1; prev>=-1; prev--){
+				int ntake = dp[i+1][prev+1];
+        
+		        int take = 0;
+		        if(prev==-1 || rack.get(prev)<rack.get(i)) 
+		           take = rack.get(i) + dp[i+1][i+1];
+        
+		        dp[i][prev+1] = Math.max(take, ntake);
+			}
+		}
+
+		return dp[0][0];
+    }
+}
+
+
+
+//                                        Space Optimization
+
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution {
+    public static int maxIncreasingDumbbellsSum(ArrayList<Integer> rack, int n) {
+        int[] old = new int[n+1];
+
+		for(int i=n-1; i>=0; i--){
+            int[] curr = new int[n+1];
+			for(int prev=i-1; prev>=-1; prev--){
+				int ntake = old[prev+1];
+        
+		        int take = 0;
+		        if(prev==-1 || rack.get(prev)<rack.get(i)) 
+		           take = rack.get(i) + old[i+1];
+        
+		        curr[prev+1] = Math.max(take, ntake);
+			}
+            old = curr;
+		}
+
+		return old[0];
+    }
+}

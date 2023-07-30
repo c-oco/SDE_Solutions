@@ -1,0 +1,77 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.* ;
+import java.io.*; 
+
+class DJS{
+    ArrayList<Integer> parent = new ArrayList<>();
+    ArrayList<Integer> rank = new ArrayList<>();
+    ArrayList<Integer> size = new ArrayList<>();
+
+    DJS(int v){
+        for(int i=0; i<=v; i++){
+            parent.add(i);
+            rank.add(0);
+            size.add(0);
+        }
+    }
+
+    public int findUPar(int node){
+        if(node == parent.get(node)) return node;
+        
+        // ultimate parent 
+        int ulp = findUPar(parent.get(node));
+        parent.set(node, ulp);
+
+        return ulp;
+    }
+
+    public void unionByRank(int u, int v){
+        int ulp_u = findUPar(u), ulp_v = findUPar(v);
+
+        if(ulp_u==ulp_v) return ;
+        else if(rank.get(ulp_u)<rank.get(ulp_v))
+            parent.set(ulp_u, ulp_v);
+        else if(rank.get(ulp_v)<rank.get(ulp_u))
+            parent.set(ulp_v, ulp_u);
+        else{
+            parent.set(ulp_u, ulp_v);
+            rank.set(ulp_v, rank.get(ulp_v)+1);
+        }
+    }
+
+    public void unionBySize(int u, int v){
+        int ulp_u = findUPar(u), ulp_v = findUPar(v);
+
+        if(ulp_u==ulp_v) return ;
+        else if(size.get(ulp_u)<size.get(ulp_v)){
+            parent.set(ulp_u, ulp_v);
+            size.set(ulp_v, size.get(ulp_u)+size.get(ulp_v));
+        }
+        else{
+            parent.set(ulp_v, ulp_u);
+            size.set(ulp_u, size.get(ulp_u)+size.get(ulp_v));
+        }
+    }
+}
+
+public class Solution {
+    public static int kruskalMST(int n, int m, ArrayList<ArrayList<Integer>> graph) {
+        Collections.sort(graph, (a, b) -> a.get(2)-b.get(2));   // Sort by edge weight
+
+        DJS g = new DJS(n);
+        
+        int sum = 0;
+
+        for(ArrayList<Integer> edg:graph){
+            if(g.findUPar(edg.get(0)) != g.findUPar(edg.get(1))){
+                sum += edg.get(2);
+                g.unionByRank(edg.get(0), edg.get(1));
+            }
+        }
+
+        return sum;
+    }
+}

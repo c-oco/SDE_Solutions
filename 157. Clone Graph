@@ -1,0 +1,72 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+//                                           DFS
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+    public static graphNode cloneGraph(graphNode node) {
+        graphNode[] store = new graphNode[(int)1e5+1];
+        
+        return dfs(node, store);
+    }
+    
+    private static graphNode dfs(graphNode node, graphNode[] store){
+        if(node==null) return null;
+        else if(store[node.data]!=null) return store[node.data];
+        else if(node.neighbours.size()==0){
+            graphNode newNode = new graphNode(node.data);
+            store[node.data] = newNode;
+            
+            return newNode;
+        }
+         
+        graphNode newNode = new graphNode(node.data);  // Clone the node
+        store[node.data] = newNode;      // So that we do not create one node multiple time
+
+        for(graphNode nei:node.neighbours){
+            newNode.neighbours.add(dfs(nei, store));   // Clone the neighbours, store their new refernces
+        }
+
+        return newNode;
+    }
+}
+
+
+
+//                                          BFS
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+    public static graphNode cloneGraph(graphNode node) {
+        if(node==null) return null;
+        
+        graphNode[] store = new graphNode[(int)1e5+1];
+        
+        Queue<graphNode> q = new LinkedList<>();
+        q.add(node);
+        
+        graphNode start = new graphNode(node.data);
+        store[node.data] = start;
+        
+        while(!q.isEmpty()){
+            graphNode curr = q.poll();
+            
+            for(graphNode nei:curr.neighbours){
+                if(store[nei.data]==null){
+                    store[nei.data] = new graphNode(nei.data);
+                    
+                    q.add(nei);      // Add the neighbours
+                }
+                
+                store[curr.data].neighbours.add(store[nei.data]);   // Clone the neighbours, store their new refernces
+            }
+        }
+        
+        return start;
+    }
+}

@@ -1,0 +1,129 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+//                                        Recursion
+
+public class Solution {
+
+	public static int lcs(String s, String t) {
+    
+		return memo(0, 0, s, t);
+    }
+
+	private static int memo(int i, int j, String s, String t){
+		if(i==s.length() || j==t.length()) return 0;
+
+		int ntake = memo(i+1, j, s, t);
+		ntake = Math.max(ntake, memo(i, j+1, s, t));
+        
+		int take = 0;
+		if(s.charAt(i)==t.charAt(j)){
+			take = 1 + memo(i+1, j+1, s, t);
+		}
+
+		return Math.max(ntake, take);
+	}
+}
+
+
+
+//                                        Memoization
+
+import java.util.Arrays;
+
+public class Solution {
+
+	public static int lcs(String s, String t) {
+        int n=s.length(), m=t.length();
+
+        int[][] dp = new int[n][m];
+
+		for(int[] row:dp)
+		   Arrays.fill(row, -1);
+
+		memo(0, 0, s, t, dp);
+
+		return dp[0][0];
+    }
+
+	private static int memo(int i, int j, String s, String t, int[][] dp){
+		if(i==s.length() || j==t.length()) return 0;
+
+		if(dp[i][j]!=-1) return dp[i][j];
+
+		int ntake = memo(i+1, j, s, t, dp);
+		ntake = Math.max(ntake, memo(i, j+1, s, t, dp));
+        
+		int take = 0;
+		if(s.charAt(i)==t.charAt(j)){
+			take = 1 + memo(i+1, j+1, s, t, dp);
+		}
+
+		return dp[i][j] = Math.max(ntake, take);
+	}
+}
+
+
+
+//                                       Tabulation
+
+import java.util.Arrays;
+
+public class Solution {
+
+	public static int lcs(String s, String t) {
+        int n=s.length(), m=t.length();
+
+        int[][] dp = new int[n+1][m+1];
+
+		for(int i=n-1; i>=0; i--){
+			for(int j=m-1; j>=0; j--){
+				int ntake = dp[i+1][j];
+		        ntake = Math.max(ntake, dp[i][j+1]);
+                
+		        int take = 0;
+		        if(s.charAt(i)==t.charAt(j)){
+		        	take = 1 + dp[i+1][j+1];
+		        }
+        
+		        dp[i][j] = Math.max(ntake, take);
+			}
+		}
+
+		return dp[0][0];
+    }
+}
+
+
+
+//                                     Space Optimization
+
+import java.util.Arrays;
+
+public class Solution {
+
+	public static int lcs(String s, String t) {
+        int n=s.length(), m=t.length();
+
+        int[] prev = new int[m+1];
+
+		for(int i=n-1; i>=0; i--){
+			int[] curr = new int[m+1];
+			for(int j=m-1; j>=0; j--){
+				int ntake = prev[j];
+		        ntake = Math.max(ntake, curr[j+1]);
+                
+		        int take = 0;
+		        if(s.charAt(i)==t.charAt(j)){
+		        	take = 1 + prev[j+1];
+		        }
+        
+		        curr[j] = Math.max(ntake, take);
+			}
+			prev = curr;
+		}
+
+		return prev[0];
+    }
+}

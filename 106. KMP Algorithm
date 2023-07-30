@@ -1,0 +1,44 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static boolean findPattern(String p, String s) {
+        if(p.length()>s.length()) return false;
+        
+        int[] pi = LPS(p);   // pi table
+        
+        int i=0, j=0, n=s.length(), m=p.length();
+        while(i<n && j<m){
+            if(s.charAt(i)==p.charAt(j)){
+                i++;
+                j++;
+            }
+            
+            if(j==m) return true;
+            else if(i<n && j<m && s.charAt(i)!=p.charAt(j)){
+                if(j!=0) j = pi[j-1];
+                else i++;
+            }
+        }
+        
+        return false;
+    }
+    
+    private static int[] LPS(String pat){
+        int[] pi = new int[pat.length()];
+        
+        int i=1, j=0;
+        while(i<pat.length()){
+            if(pat.charAt(i)==pat.charAt(j)) pi[i++] = ++j;
+            else{
+                if(j!=0) j = pi[j-1];
+                else pi[i++] = 0;
+            }
+        }
+        
+        return pi;
+    }
+}

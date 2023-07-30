@@ -1,0 +1,54 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.*;
+
+public class Solution {
+
+	public static int zAlgorithm(String s, String p, int n, int m) {
+		if(m>n) return 0;
+
+		int[] z = makeZ((p+"#"+s).toCharArray());
+        
+		int occ=0;
+		for(int i=0; i<z.length; i++){
+			if(z[i]==m)
+			   occ++;
+		}
+
+		return occ;
+	}
+
+	private static int[] makeZ(char[] s){
+		int n=s.length;
+
+		int[] Z = new int[n];
+
+		int L=0, R=0;
+		for(int k=1; k<n; k++){
+			if(k>R){
+				L = R = k;
+				while(R<n && s[R]==s[R-L]) R++;
+
+				Z[k] = R-L;
+				R--;
+			}
+			else{
+				int k1 = k-L;
+
+				if(Z[k1]<R-k+1)
+				   Z[k] = Z[k1];
+				else{
+					L = k;
+					while(R<n && s[R]==s[R-L]) R++;
+
+					Z[k] = R-L;
+					R--;
+				}
+			}
+		}
+
+		return Z;
+	}
+}
