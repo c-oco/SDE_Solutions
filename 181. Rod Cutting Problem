@@ -1,0 +1,93 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+
+//                                    Memoization
+
+
+import java.util.*;
+
+public class Solution {
+	public static int cutRod(int price[], int n) {
+		int[][] dp = new int[n][n+1];
+
+		for(int[] row:dp)
+		   Arrays.fill(row, -1);
+
+		return memo(n-1,n,price,dp);
+	}
+
+	private static int memo(int i, int N, int[] price, int[][] dp){
+		if(i==0) return N*price[0];
+
+		if(dp[i][N]!=-1) return dp[i][N];
+
+		int ntake = memo(i-1,N,price,dp);
+
+		int take = 0;
+		if(i+1<=N)
+		    take = price[i] + memo(i,N-i-1,price,dp);
+
+		return dp[i][N] = Math.max(take,ntake);
+	}
+}
+
+
+
+//                                Tabulation
+
+import java.util.*;
+
+public class Solution {
+	public static int cutRod(int price[], int n) {
+		int[][] dp = new int[n][n+1];
+
+		for(int j=1; j<=n; j++) dp[0][j] = j*price[0];
+
+		for(int i=1; i<n; i++){
+			for(int j=1; j<=n; j++){
+				int ntake = dp[i-1][j];
+
+		        int take = 0;
+		        if(i+1<=j)
+		            take = price[i] + dp[i][j-i-1];
+        
+		        dp[i][j] = Math.max(take,ntake);
+			}
+		}
+
+		return dp[n-1][n];
+	}
+}
+
+
+
+
+//                                    Space Optimization
+
+import java.util.*;
+
+public class Solution {
+	public static int cutRod(int price[], int n) {
+		int[] prev = new int[n+1];
+
+		for(int j=1; j<=n; j++) prev[j] = j*price[0];
+
+		for(int i=1; i<n; i++){
+			int[] curr = new int[n+1];
+			for(int j=1; j<=n; j++){
+				int ntake = prev[j];
+
+		        int take = 0;
+		        if(i+1<=j)
+		            take = price[i] + curr[j-i-1];
+        
+		        curr[j] = Math.max(take,ntake);
+			}
+			prev = curr;
+		}
+
+		return prev[n];
+	}
+}

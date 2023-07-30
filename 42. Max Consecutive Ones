@@ -1,0 +1,44 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+import java.util.ArrayList;
+
+public class Solution {
+	public static int longestSubSeg(ArrayList<Integer> arr , int n, int k) {
+		int len=0;
+
+		int i=0, j=0, z=k;
+		while(j<n){
+			while(j<n && (k>0 || arr.get(j)==1)){    // Traverse till we replace k zeroes or till we continuous 1's
+				if(arr.get(j)==0) k--;               // Decrease k if 0 found
+				j++;
+			}
+
+			len = Math.max(len, j-i);     // Calculate length the maximum we can go by replacing k 0's
+
+			if(k==0){                     // When we replace k 0's
+                while(i<j){                
+					if(arr.get(i)==0){      // we need to increase k for further calculations
+						if(z!=0)            // Edge Case :- when k=0 given
+						  k++;
+						i++; break;
+					}
+					i++;
+				}
+			}
+            
+			// The j pointer will not increase if k=0 given, in case when calue of next j is 0 so we need to do this
+			if(j<n && arr.get(j)==0){
+				if(z!=0)                   // Edge Case :- when k=0 given
+				  k--;
+				j++;
+			}
+			else{
+				j++;
+			}
+		}
+
+		return len;
+	}
+}

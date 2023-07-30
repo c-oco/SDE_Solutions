@@ -1,0 +1,106 @@
+// Author :- Nitish ,    Github:- c-oco
+
+
+
+//                              Memoization
+
+import java.util.*;
+
+public class Solution {
+
+	public static long countWaysToMakeChange(int denominations[], int value){
+		int n=denominations.length;
+		long[][] dp = new long[n][value+1];
+
+		for(long[] row:dp)
+		   Arrays.fill(row, -1);
+
+		return memo(n-1,value,denominations,dp);
+	}
+
+	private static long memo(int i, int value, int[] coins, long[][] dp){
+		if(i==0){
+			return (value%coins[0]==0)?1:0;
+		}
+
+		if(dp[i][value]!=-1) return dp[i][value];
+
+		long ntake = memo(i-1,value,coins,dp);
+
+		long take=0;
+		if(coins[i]<=value)
+		   take = memo(i,value-coins[i],coins,dp);
+
+		return dp[i][value] = take + ntake;
+	}	
+}
+
+
+
+//                                 Tabulation
+
+import java.util.*;
+
+public class Solution {
+
+	public static long countWaysToMakeChange(int denominations[], int value){
+		int n=denominations.length;
+		long[][] dp = new long[n][value+1];
+
+		for(int i=0; i<n; i++){
+			for(int j=0; j<=value; j++){
+				if(i==0){
+					if(j%denominations[0]==0)
+		                dp[0][j] = 1;
+					continue;
+				}
+
+				long ntake = dp[i-1][j];
+
+		        long take=0;
+		        if(denominations[i]<=j)
+		           take = dp[i][j-denominations[i]];
+        
+		        dp[i][j] = take + ntake;
+			}
+		}
+
+		return dp[n-1][value];
+	}	
+}
+
+
+
+//                                     Space Optimization
+
+import java.util.*;
+
+public class Solution {
+
+	public static long countWaysToMakeChange(int denominations[], int value){
+		int n=denominations.length;
+		long[] prev = new long[value+1];
+
+		for(int i=0; i<n; i++){
+			long[] curr = new long[value+1];
+			for(int j=0; j<=value; j++){
+				if(i==0){
+					if(j%denominations[0]==0)
+		                curr[j] = 1;
+					continue;
+				}
+
+				long ntake = prev[j];
+
+		        long take=0;
+		        if(denominations[i]<=j)
+		           take = curr[j-denominations[i]];
+        
+		        curr[j] = take + ntake;
+			}
+			prev = curr;
+		}
+
+		return prev[value];
+	}	
+}
